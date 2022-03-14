@@ -66,7 +66,7 @@ export class GameFieldPage extends Control {
         this.questionCycle(gameName, questions, index + 1, onFinish);
       }
     } else {
-      throw new Error('Game tyoe does not exist');
+      throw new Error('Game type does not exist');
     }
   }
 }
