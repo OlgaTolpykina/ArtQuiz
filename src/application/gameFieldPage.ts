@@ -1,5 +1,6 @@
 import Control from '../common/control';
 import { ArtistQuestionView } from './artistQuestionView';
+import { PictureQuestionView } from './pictureQuestionView';
 import { IArtistQuestionData } from './IArtistQuestionData';
 
 interface IQuizOptions {
@@ -37,28 +38,35 @@ export class GameFieldPage extends Control {
     const questions: Array<IArtistQuestionData> = [{answers: [1, 2, 3, 4], correctAnswerIndex: 1}, {answers: [1, 2, 3, 4], correctAnswerIndex: 3}, {answers: [1, 2, 3, 4], correctAnswerIndex: 4}];
     this.results = []; 
     
-    this.questionCycle(questions, 0, () => {
+    this.questionCycle(gameOptions.gameName, questions, 0, () => {
       this.onFinish(this.results);
     });
-
-    // const finishButton = new Control(this.node, 'button', '', 'finish');
-    // finishButton.node.onclick = () => {
-    //   this.onFinish({});
-    // }
   }
 
-  questionCycle(questions: Array<IArtistQuestionData>, index: number, onFinish: () => void) {
+  questionCycle(gameName: string, questions: Array<IArtistQuestionData>, index: number, onFinish: () => void) {
     if (index >= questions.length) {
       onFinish();
       return;
     }
     this.progressIndicator.node.textContent = `${index + 1} / ${questions.length}`;
     this.answersIndicator.node.textContent = this.results.map(it => it ? '+' : '-').join(' ');
-    const question = new ArtistQuestionView(this.node, questions[0]);
-    question.onAnswer = (answerIndex) => {
-      question.destroy();
-      this.results.push(answerIndex === questions[index].correctAnswerIndex);
-      this.questionCycle(questions, index + 1, onFinish);
+    
+    if (gameName === 'artists') {
+      const question = new ArtistQuestionView(this.node, questions[index]);
+      question.onAnswer = (answerIndex) => {
+        question.destroy();
+        this.results.push(answerIndex === questions[index].correctAnswerIndex);
+        this.questionCycle(gameName, questions, index + 1, onFinish);
+      }
+    } else if (gameName === 'pictures') {
+      const question = new PictureQuestionView(this.node, questions[index]);
+      question.onAnswer = (answerIndex) => {
+        question.destroy();
+        this.results.push(answerIndex === questions[index].correctAnswerIndex);
+        this.questionCycle(gameName, questions, index + 1, onFinish);
+      }
+    } else {
+      throw new Error('Game tyoe does not exist');
     }
   }
 }
