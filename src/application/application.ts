@@ -22,7 +22,16 @@ export class Application extends Control {
   }
 
   private gameCycle(gameName: string, categoryIndex: number) {
-    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, this.model.getPicturesQuestions(categoryIndex));
+    let questions: Array<any>;
+    if (gameName === 'artists') {
+      questions = this.model.getArtistsQuestion(categoryIndex);
+    } else if (gameName === 'pictures') {
+      questions = this.model.getPicturesQuestions(categoryIndex);
+    } else {
+      throw new Error('Game type does not exist');
+    }
+
+    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, questions);
         gameField.onHome = () => {
           gameField.destroy()
           this.mainCycle();
