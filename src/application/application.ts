@@ -7,12 +7,14 @@ import { StartPage } from './startPage';
 import { QuizDataModel } from './quizDataModel';
 
 export class Application extends Control {
+  private model: QuizDataModel;
+
   constructor(parentNode: HTMLElement) {
     super (parentNode);
     //preloader
     const preloader = new Control(this.node, 'div', '', 'loading....');
-    const model = new QuizDataModel();
-    model.build().then(result => {
+    this.model = new QuizDataModel();
+    this.model.build().then(result => {
       preloader.destroy();
       console.log(result.data);
       this.mainCycle();
@@ -20,7 +22,7 @@ export class Application extends Control {
   }
 
   private gameCycle(gameName: string, categoryIndex: number) {
-    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex });
+    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, this.model.getPicturesQuestions(categoryIndex));
         gameField.onHome = () => {
           gameField.destroy()
           this.mainCycle();
@@ -44,7 +46,7 @@ export class Application extends Control {
   }
 
   private categoryCycle(gameName: string) {
-    const categories = new CategoriesPage(this.node, gameName);
+    const categories = new CategoriesPage(this.node, gameName, this.model.getCategoriesData());
       categories.onBack = () => {
         categories.destroy();
         this.mainCycle();

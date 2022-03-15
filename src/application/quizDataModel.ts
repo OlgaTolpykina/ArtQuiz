@@ -21,7 +21,26 @@ interface IImageDto {
 
 type IImagesDto = Record<string, IImageDto>
 
+export interface ICategoryData{
+  name: string;
+  picture: string;
+  score?: Array<boolean>;
+}
+
+export interface IArtistsQuestionData {
+  answers: string[];
+  correctAnswerIndex: number;
+  artistImgUrl: string;
+}
+
+export interface IPicturesQuestionData {
+  answers: string[];
+  correctAnswerIndex: number;
+  artistName: string;
+}
+
 export class QuizDataModel {
+  private questionsPerCategory = 10;
   data: Array<IPictureData>;
 
   constructor() {
@@ -33,9 +52,56 @@ export class QuizDataModel {
     return this;
   }
 
+  public getCategoriesData() {
+    const questionsPerCategory = this.questionsPerCategory;
+    const categoriesCount = Math.floor( this.data.length / questionsPerCategory);
+    const categories: Array<ICategoryData> = [];
+    for (let i = 0; i < categoriesCount; i++ ) {
+      const pictureUrl = `./public/img/pictures/${i * questionsPerCategory}.jpg`;
+      const categoryData: ICategoryData = {
+        name: i.toString(),
+        picture: pictureUrl,
+        score: new Array(categoriesCount).fill(false),
+      }
+      categories.push(categoryData);
+    }
+    return categories;
+  }
+
+  public getPicturesQuestions(categoryIndex: number) {
+    const questionsPerCategory = this.questionsPerCategory;
+    const result: Array<IPicturesQuestionData> = [];
+    for (let i = categoryIndex * questionsPerCategory; i < ( categoryIndex + 1) * questionsPerCategory; i++) {
+      const answers: Array<string> = [];
+      const answersCount = 4;
+      const correctAnswerIndex = Math.floor(Math.random() * answersCount);
+      const correctAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      for(let j=0; j < answersCount; j++) {
+        if(correctAnswerIndex === j) {
+          answers.push(correctAnswer);
+        } else {
+          const randomImage = this.data[Math.floor(Math.random() * this.data.length)].picture;
+          const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
+          answers.push(variantUrl);
+        }
+      }
+      const question: IPicturesQuestionData = {
+        artistName: this.data[i].author.ru,
+        answers: answers,
+        correctAnswerIndex: correctAnswerIndex,
+      }
+      result.push(question);
+    }
+    return result;
+  }
+
+  public getArtistsQuestion() {
+
+  }
+
   private async loadImagesData(url: string): Promise<Array<IPictureData>> {
     const res = await fetch(url);
-    const imagesData = await res.json();
+    const imagesData: IImagesDto = await res.json();
     const modelData: Array<IPictureData> = Object.keys(imagesData).map(it => {
       const item = imagesData[it];
       const record: IPictureData = {
