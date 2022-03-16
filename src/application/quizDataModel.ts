@@ -108,7 +108,6 @@ export class QuizDataModel {
           answers.push(correctAnswer);
         } else {
           const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
-          // const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
           answers.push(randomName.ru);
         }
       }

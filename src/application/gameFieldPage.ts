@@ -1,8 +1,5 @@
 import Control from '../common/control';
-import { ArtistQuestionView } from './artistQuestionView';
-import { PictureQuestionView } from './pictureQuestionView';
-// import { IArtistQuestionData } from './IArtistQuestionData';
-import { IArtistsQuestionData, IPicturesQuestionData } from './quizDataModel';
+
 import { IQuizSettings } from './settingsPage';
 import { SoundManager } from './soundManager';
 import { AnimatedControl } from './animatedControl';

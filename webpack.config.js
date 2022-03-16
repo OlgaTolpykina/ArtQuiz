@@ -44,16 +44,7 @@ const config = {
             },
             {
                 test: /\.css$/i,
-                use: [stylesHandler,
-                    {
-                        loader: "css-loader",
-                            options: {
-                            modules: {
-                                exportLocalsConvention: "camelCase",
-                                },
-                            },
-                    }
-                    ],
+                use: [stylesHandler, 'css-loader'],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|mp3)$/i,

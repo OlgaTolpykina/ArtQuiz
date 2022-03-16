@@ -1,24 +1,24 @@
 import Control from '../common/control';
 import { AnimatedControl } from './animatedControl';
-import style from './startPage.css';
+import './startPage.css';
 
 export class StartPage extends AnimatedControl {
   onSettings: () => void;
   onGameSelect: (gameName: string) => void;
 
   constructor(parentNode: HTMLElement) {
-    super (parentNode, 'div', { default: style['main_wrapper'], hidden: style['hide']});
+    super (parentNode, 'div', { default: 'main_wrapper', hidden: 'hide'});
     this.quickOut();
 
-    const selectWrapper = new Control(this.node, 'div', style['select_wrapper']);
-    const picturesButton = new Control(selectWrapper.node, 'button', style['select_item'], 'pictures');
+    const selectWrapper = new Control(this.node, 'div', 'select_wrapper');
+    const picturesButton = new Control(selectWrapper.node, 'button', 'select_item', 'pictures');
     picturesButton.node.onclick = () => this.onGameSelect('pictures');
 
-    const artistsButton = new Control(selectWrapper.node, 'button', style['select_item'], 'artists');
+    const artistsButton = new Control(selectWrapper.node, 'button', 'select_item', 'artists');
     artistsButton.node.onclick = () => this.onGameSelect('artists');
 
-    const settingsWrapper = new Control(this.node, 'div', style['main_bottom']);
-    const settingsButton = new Control(settingsWrapper.node, 'button', style['button'], 'settings');
+    const settingsWrapper = new Control(this.node, 'div', 'main_bottom');
+    const settingsButton = new Control(settingsWrapper.node, 'button', 'button', 'settings');
     settingsButton.node.onclick = () => this.onSettings();
   }
 }

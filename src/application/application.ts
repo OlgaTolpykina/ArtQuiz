@@ -7,7 +7,7 @@ import { StartPage } from './startPage';
 import { IArtistsQuestionData, IPicturesQuestionData, QuizDataModel } from './quizDataModel';
 import { SoundManager } from './soundManager';
 
-import style from './application.css';
+import './application.css';
 import { ArtistQuestionView } from './artistQuestionView';
 import { PictureQuestionView } from './pictureQuestionView';
 
@@ -19,11 +19,11 @@ export class Application extends Control {
   footer: Control<HTMLElement>;
 
   constructor(parentNode: HTMLElement) {
-    super (parentNode, 'div', style['global_wrapper']);
+    super (parentNode, 'div', 'global_wrapper');
 
-    this.header = new Control(this.node, 'div', style['global_header']);
-    this.main = new Control(this.node, 'div', style['global_main']);
-    this.footer = new Control(this.node, 'div', style['global_footer']);
+    this.header = new Control(this.node, 'div', 'global_header');
+    this.main = new Control(this.node, 'div', 'global_main');
+    this.footer = new Control(this.node, 'div', 'global_footer');
     //preloader
     const preloader = new Control(this.node, 'div', '', 'loading....');
     SoundManager.preload();
