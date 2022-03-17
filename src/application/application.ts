@@ -33,13 +33,12 @@ export class Application extends Control {
     this.model = new QuizDataModel();
     this.model.build().then(result => {
       preloader.destroy();
-      console.log(result.data);
       this.mainCycle();
     });
     this.gameFieldModel = new GameFieldModel();
   }
 
-  private gameCycle(gameName: string, categoryIndex: number) {
+  private gameCycle(gameName: string, categoryIndex: number, categoryNameIndex: string) {
     let questions: Array<any>;
     let gameField: GameFieldPage<unknown>;
 
@@ -64,21 +63,20 @@ export class Application extends Control {
     gameField.onFinish = (result) => {
       gameField.destroy();
       const gameOverPage = new GameOverPage(this.main.node, result);
-      this.gameFieldModel.setData(categoryIndex + 1, result);
-      console.log(gameName, categoryIndex, result);
+      this.gameFieldModel.setData(categoryNameIndex, result);
       gameOverPage.onHome = () => {
         gameOverPage.destroy();
         this.mainCycle();
       }
       gameOverPage.onNext = () => {
         gameOverPage.destroy();
-        this.gameCycle(gameName, categoryIndex + 1);
+        this.gameCycle(gameName, categoryIndex + 1, categoryNameIndex);
       }
     }
   }
 
   private categoryCycle(gameName: string) {
-    const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData(gameName));
+    const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData(gameName), this.gameFieldModel.getData());
       categories.animateIn();
       categories.onBack = () => {
         categories.animateOut().then(() => {
@@ -86,10 +84,12 @@ export class Application extends Control {
           this.mainCycle();
         });
       }
+      
       categories.onSelect = (index) => {
+        const categoryNameIndex = this.model.getCategoriesData(gameName)[index];
         categories.animateOut().then(() => {
           categories.destroy()
-          this.gameCycle(gameName, index);
+          this.gameCycle(gameName, index, categoryNameIndex.name);
         });
       }
   }

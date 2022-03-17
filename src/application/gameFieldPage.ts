@@ -14,35 +14,36 @@ interface IQuizOptions {
   settings: IQuizSettings;
 }
 
-type IQuizResults = Array<boolean>;
-interface IQuizScore {
-  [key: number]: IQuizResults | null;
+export type IQuizResults = Array<boolean>;
+export interface IQuizScore {
+  [key: string]: IQuizResults | null;
 }
 
 export class GameFieldModel {
   private score: IQuizScore;
 
   constructor() {
-    this.score = {};
-
+    this.loadFromStorage();
   }
 
-  // loadFromStorage() {
-  //   const storageData = localStorage.getItem('score');
-  //   if(!storageData) {
-  //     this.settings = defaultSettings;
-  //   } else {
-  //     const data: IQuizSettings = JSON.parse(storageData);
-  //     this.settings = data;
-  //   }
-  // }
+  loadFromStorage() {
+    const storageData = localStorage.getItem('score');
+    if(!storageData) {
+      this.score = {};
+    } else {
+      const data: IQuizScore = JSON.parse(storageData);
+      this.score = data;
+    }
+  }
 
   getData() {
     return JSON.parse(JSON.stringify(this.score));
   }
   
-  setData(categoryIndex: number, data: Array<boolean>) {
+  setData(categoryIndex: string, data: Array<boolean>) {
     this.score[categoryIndex] = data;
+    console.log('categoryIndex', categoryIndex);
+    console.log('this.score', this.score);
     this.saveToStorage();
   }
 
