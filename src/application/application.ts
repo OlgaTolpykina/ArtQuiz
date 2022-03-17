@@ -1,7 +1,7 @@
 import Control from '../common/control';
 import { CategoriesPage } from './categoriesPage';
 import { SettingsModel, SettingsPage } from './settingsPage';
-import { GameFieldPage } from './gameFieldPage';
+import { GameFieldPage, GameFieldModel } from './gameFieldPage';
 import { GameOverPage } from './gameOverPage';
 import { StartPage } from './startPage';
 import { IArtistsQuestionData, IPicturesQuestionData, QuizDataModel } from './quizDataModel';
@@ -17,6 +17,7 @@ export class Application extends Control {
   header: Control<HTMLElement>;
   main: Control<HTMLElement>;
   footer: Control<HTMLElement>;
+  gameFieldModel: GameFieldModel;
 
   constructor(parentNode: HTMLElement) {
     super (parentNode, 'div', 'global_wrapper');
@@ -35,11 +36,13 @@ export class Application extends Control {
       console.log(result.data);
       this.mainCycle();
     });
+    this.gameFieldModel = new GameFieldModel();
   }
 
   private gameCycle(gameName: string, categoryIndex: number) {
     let questions: Array<any>;
     let gameField: GameFieldPage<unknown>;
+
     if (gameName === 'artists') {
       questions = this.model.getArtistsQuestion(categoryIndex);
       gameField = new GameFieldPage<IArtistsQuestionData>(this.main.node, ArtistQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
@@ -61,7 +64,8 @@ export class Application extends Control {
     gameField.onFinish = (result) => {
       gameField.destroy();
       const gameOverPage = new GameOverPage(this.main.node, result);
-      console.log(result);
+      this.gameFieldModel.setData(categoryIndex + 1, result);
+      console.log(gameName, categoryIndex, result);
       gameOverPage.onHome = () => {
         gameOverPage.destroy();
         this.mainCycle();
@@ -74,7 +78,7 @@ export class Application extends Control {
   }
 
   private categoryCycle(gameName: string) {
-    const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData());
+    const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData(gameName));
       categories.animateIn();
       categories.onBack = () => {
         categories.animateOut().then(() => {

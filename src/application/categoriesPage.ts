@@ -19,7 +19,7 @@ export class CategoriesPage extends AnimatedControl {
 
     const categoriesContainer = new Control(this.node, 'div', 'categories');
     const categoryButtons  = quizCategoriesData.map((it, i) => {
-      return new CategoryItem(categoriesContainer.node, it, {
+      return new CategoryItem(categoriesContainer.node, it, (i + 1).toString(), {
         onSelect: () => {
           this.onSelect(i);
         },
@@ -37,11 +37,12 @@ interface ICategoryItemController {
 }
 
 class CategoryItem extends Control {
-  constructor(parentNode: HTMLElement, data: ICategoryData, controller: ICategoryItemController) {
+  constructor(parentNode: HTMLElement, data: ICategoryData, categoryName: string, controller: ICategoryItemController) {
     super(parentNode, 'div', 'category');
 
-    const button = new Control(this.node, 'div', 'category_img', data.name.toString());
+    const button = new Control(this.node, 'div', 'category_img', categoryName);
       button.node.style.backgroundImage = `url('${data.picture}')`;
+      button.node.classList.add('filter');
       button.node.onclick = () => {
        controller.onSelect();
       }

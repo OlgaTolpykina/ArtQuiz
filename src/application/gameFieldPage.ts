@@ -15,6 +15,42 @@ interface IQuizOptions {
 }
 
 type IQuizResults = Array<boolean>;
+interface IQuizScore {
+  [key: number]: IQuizResults | null;
+}
+
+export class GameFieldModel {
+  private score: IQuizScore;
+
+  constructor() {
+    this.score = {};
+
+  }
+
+  // loadFromStorage() {
+  //   const storageData = localStorage.getItem('score');
+  //   if(!storageData) {
+  //     this.settings = defaultSettings;
+  //   } else {
+  //     const data: IQuizSettings = JSON.parse(storageData);
+  //     this.settings = data;
+  //   }
+  // }
+
+  getData() {
+    return JSON.parse(JSON.stringify(this.score));
+  }
+  
+  setData(categoryIndex: number, data: Array<boolean>) {
+    this.score[categoryIndex] = data;
+    this.saveToStorage();
+  }
+
+  saveToStorage() {
+    localStorage.setItem('score', JSON.stringify(this.score));
+  }
+}
+
 export class GameFieldPage<QuestionDataType> extends Control {
   onBack: () => void;
   onHome: () => void;
@@ -46,7 +82,6 @@ export class GameFieldPage<QuestionDataType> extends Control {
 
     this.timer = new Timer(this.node);
     this.progressIndicator = new Control(this.node, 'div', '', '');
-    // this.answersIndicator = new Control(this.node, 'div', '', '');
 
     this.results = []; 
     
