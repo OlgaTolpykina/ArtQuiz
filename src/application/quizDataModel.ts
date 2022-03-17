@@ -31,12 +31,17 @@ export interface IArtistsQuestionData {
   answers: string[];
   correctAnswerIndex: number;
   artistImgUrl: string;
+  artistName: string;
+  correctAnswerYear: number;
+  correctAnswerPictureName: string;
 }
 
 export interface IPicturesQuestionData {
   answers: string[];
   correctAnswerIndex: number;
   artistName: string;
+  correctAnswerYear: number;
+  correctAnswerPictureName: string;
 }
 
 export class QuizDataModel {
@@ -76,6 +81,8 @@ export class QuizDataModel {
       const answersCount = 4;
       const correctAnswerIndex = Math.floor(Math.random() * answersCount);
       const correctAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      const correctAnswerYear = this.data[i].year;
+      const correctAnswerPictureName = this.data[i].name.ru;
       for(let j=0; j < answersCount; j++) {
         if(correctAnswerIndex === j) {
           answers.push(correctAnswer);
@@ -89,6 +96,8 @@ export class QuizDataModel {
         artistName: this.data[i].author.ru,
         answers: answers,
         correctAnswerIndex: correctAnswerIndex,
+        correctAnswerYear: correctAnswerYear,
+        correctAnswerPictureName: correctAnswerPictureName,
       }
       result.push(question);
     }
@@ -115,6 +124,9 @@ export class QuizDataModel {
         artistImgUrl: `./public/img/pictures/${this.data[i].picture}.jpg`,
         answers: answers,
         correctAnswerIndex: correctAnswerIndex,
+        artistName: this.data[i].author.ru,
+        correctAnswerYear: this.data[i].year,
+        correctAnswerPictureName: this.data[i].name.ru,
       }
       result.push(question);
     }

@@ -1,6 +1,6 @@
 import Control from '../common/control';
 import { AnimatedControl } from './animatedControl';
-import { IArtistsQuestionData, IPicturesQuestionData } from './quizDataModel';
+import { IPicturesQuestionData } from './quizDataModel';
 
 import './pictureQuestion.css';
 

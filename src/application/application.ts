@@ -39,18 +39,12 @@ export class Application extends Control {
 
   private gameCycle(gameName: string, categoryIndex: number) {
     let questions: Array<any>;
+    let gameField: GameFieldPage<unknown>;
     if (gameName === 'artists') {
       questions = this.model.getArtistsQuestion(categoryIndex);
-    } else if (gameName === 'pictures') {
-      questions = this.model.getPicturesQuestions(categoryIndex);
-    } else {
-      throw new Error('Game type does not exist');
-    }
-
-    let gameField: GameFieldPage<unknown>
-    if (gameName === 'artists') {
       gameField = new GameFieldPage<IArtistsQuestionData>(this.main.node, ArtistQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
     } else if (gameName === 'pictures') {
+      questions = this.model.getPicturesQuestions(categoryIndex);
       gameField = new GameFieldPage<IPicturesQuestionData>(this.main.node, PictureQuestionView,{ gameName: gameName, categoryIndex: categoryIndex, settings: this.settingsModel.getData() }, questions);
     } else {
       throw new Error('Unknown game name' + gameName);
@@ -67,6 +61,7 @@ export class Application extends Control {
     gameField.onFinish = (result) => {
       gameField.destroy();
       const gameOverPage = new GameOverPage(this.main.node, result);
+      console.log(result);
       gameOverPage.onHome = () => {
         gameOverPage.destroy();
         this.mainCycle();
