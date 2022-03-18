@@ -1,9 +1,12 @@
-.page_wrapper {
-
-}
-
 .main_wrapper {
+  min-height: calc(100vh - 160px);
+  max-width: 950px;
+  margin: 0 auto;
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   transition-duration: 500ms;
   left: 0;
 }
@@ -21,8 +24,19 @@
 .select_item {
   margin: 20px;
   width: 300px;
+}
+
+.select_item .pictures {
+  width: 300px;
   height: 300px;
-  border: 1px solid #000;
+  background-image: url('../../../assets/img/start_picture.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.select_item.artists {
+  background-image: url('../../../assets/img/start_artist.jpg');
 }
 
 .main_bottom {

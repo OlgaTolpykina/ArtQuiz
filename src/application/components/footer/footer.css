@@ -1,0 +1,79 @@
+.footer {
+  min-height: 30px;
+  padding: 10px;
+  height: 80px;
+  color: white;
+}
+
+.footer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 20px;
+}
+
+.footer .link {
+  text-decoration: none;
+  color: white;
+  margin-right: 5px;
+}
+.footer .link:hover {
+  color: #fcf800;
+}
+
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 210px;
+}
+
+.rss-logo img {
+  width: 100px;
+  height: 35px;
+}
+
+.rss-logo img:hover {
+  transform: scale(1.1);
+  opacity: 0.5;
+}
+
+/* @media (max-width: 768px) {
+  .info {
+      width: 375px;
+      .copyright {
+          width: 10%;
+      }
+      .year {
+          width: 10%;
+      }
+  }
+
+  .github-links {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 80%;
+  }
+} */
+
+/* @media (max-width: 560px) {
+  .footer {
+      font-size: 15px;
+  }
+
+  .info {
+      width: 230px;
+  }
+
+  .info .year {
+      width: 10%;
+  }
+
+  .rss-logo img {
+      width: 60px;
+  }
+} */

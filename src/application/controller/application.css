@@ -1,21 +1,32 @@
 .global_wrapper {
-  --header-color: #f00;
-  --main-color: #ccc;
-  --footer-color: #ff0;
   margin: 0;
+  background: url('../../assets/img/background.jpg') no-repeat;
+  background-size: cover;
 }
 
 .global_header {
-  height: 30px;
-  background-color: var(--header-color);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.global_title {
+  text-transform: uppercase;
+  font-size: 40px;
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, rgb(255, 251, 34)), color-stop(0.15, rgba(34, 255, 108, 0.897)), color-stop(0.3, rgb(255, 0, 255)), color-stop(0.45, rgb(233, 255, 34)), color-stop(0.6, rgb(251, 255, 34)),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, rgb(255, 0, 255)) );
+  background-image: gradient( linear, left top, right top, color-stop(0, rgb(255, 251, 34)), color-stop(0.15, rgba(34, 255, 108, 0.897)), color-stop(0.3, rgb(52, 255, 34)), color-stop(0.45, rgb(122, 255, 34)), color-stop(0.6, rgb(251, 255, 34)),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, rgb(71, 255, 34)) );
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 9px 6px 0px white;
 }
 
 .global_main {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 160px);
   overflow: hidden;
 }
 
 .global_footer {
-  height: 30px;
-  background-color: var(--footer-color);
+  height: 80px;
 }

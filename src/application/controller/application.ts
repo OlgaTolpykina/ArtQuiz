@@ -9,6 +9,8 @@ import { PictureQuestionView } from '../pages/questionsPage/pictureQuestionView'
 import { ScoreDetailsPage } from '../pages/scoreDetailsPage/scoreDetailsPage';
 import { QuizDataModel } from '../services/quizDataModel';
 import { SoundManager } from '../services/soundManager';
+import footer from '../components/footer/footer';
+import '../components/footer/footer.css';
 import './application.css';
 
 export class Application extends Control {
@@ -16,15 +18,15 @@ export class Application extends Control {
   settingsModel: SettingsModel;
   header: Control<HTMLElement>;
   main: Control<HTMLElement>;
-  footer: Control<HTMLElement>;
   gameFieldModel: GameFieldModel;
 
   constructor(parentNode: HTMLElement) {
     super (parentNode, 'div', 'global_wrapper');
 
     this.header = new Control(this.node, 'div', 'global_header');
+    const title = new Control(this.header.node, 'h1', 'global_title', 'artquiz');
     this.main = new Control(this.node, 'div', 'global_main');
-    this.footer = new Control(this.node, 'div', 'global_footer');
+    this.node.append(footer.getTemplate());
     const preloader = new Control(this.node, 'div', '', 'loading....');
     SoundManager.preload();
     this.settingsModel = new SettingsModel();
