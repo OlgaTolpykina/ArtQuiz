@@ -1,4 +1,4 @@
-import Control from '../common/control';
+import Control from '../../components/control';
 
 export interface IQuizSettings {
   time: number;

@@ -1,4 +1,4 @@
-import Control from '../common/control';
+import Control from './control';
 
 export class AnimatedControl extends Control {
   private styles: { default: string; hidden: string; };

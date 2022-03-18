@@ -1,16 +1,15 @@
-import Control from '../common/control';
-import { CategoriesPage } from './categoriesPage';
-import { SettingsModel, SettingsPage } from './settingsPage';
-import { GameFieldPage, GameFieldModel } from './gameFieldPage';
-import { GameOverPage } from './gameOverPage';
-import { StartPage } from './startPage';
-import { QuizDataModel } from './quizDataModel';
-import { SoundManager } from './soundManager';
-
+import Control from '../components/control';
+import { CategoriesPage } from '../pages/categoriesPage/categoriesPage';
+import { SettingsModel, SettingsPage } from '../pages/settingsPage/settingsPage';
+import { GameFieldPage, GameFieldModel } from '../pages/gameFieldPage/gameFieldPage';
+import { GameOverPage } from '../pages/resultPage/gameOverPage';
+import { StartPage } from '../pages/startPage/startPage';
+import { ArtistQuestionView } from '../pages/questionsPage/artistQuestionView';
+import { PictureQuestionView } from '../pages/questionsPage/pictureQuestionView';
+import { ScoreDetailsPage } from '../pages/scoreDetailsPage/scoreDetailsPage';
+import { QuizDataModel } from '../services/quizDataModel';
+import { SoundManager } from '../services/soundManager';
 import './application.css';
-import { ArtistQuestionView } from './artistQuestionView';
-import { PictureQuestionView } from './pictureQuestionView';
-import { ScoreDetailsPage } from './scoreDetailsPage';
 
 export class Application extends Control {
   private model: QuizDataModel;
@@ -26,7 +25,6 @@ export class Application extends Control {
     this.header = new Control(this.node, 'div', 'global_header');
     this.main = new Control(this.node, 'div', 'global_main');
     this.footer = new Control(this.node, 'div', 'global_footer');
-    //preloader
     const preloader = new Control(this.node, 'div', '', 'loading....');
     SoundManager.preload();
     this.settingsModel = new SettingsModel();

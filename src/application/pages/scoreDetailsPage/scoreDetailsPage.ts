@@ -1,7 +1,7 @@
-import Control from '../common/control';
-import { ICategoryData, IQuestionData } from './quizDataModel';
-import { AnimatedControl } from './animatedControl';
-import { IQuizResults, IQuizScore } from './gameFieldPage';
+import Control from '../../components/control';
+import { ICategoryData, IQuestionData } from '../../services/types';
+import { AnimatedControl } from '../../components/animatedControl';
+import { IQuizResults, IQuizScore } from '../gameFieldPage/gameFieldPage';
 import './categories.css';
 import './modal.css';
 
@@ -20,7 +20,7 @@ export class ScoreDetailsPage extends AnimatedControl {
 
     const questionContainer = new Control(this.node, 'div', 'categories');
     const categoryButtons  = quizCategoriesData[categoryIndex].questions.map((it, i) => {
-      return new QuestionItem(questionContainer.node, it, quizScoreData[i]);
+      return new QuestionItem(questionContainer.node, it, quizScoreData[i + 1]);
     });
   }
 }

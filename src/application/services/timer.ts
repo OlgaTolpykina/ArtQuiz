@@ -1,4 +1,4 @@
-import Control from '../common/control';
+import Control from '../components/control';
 
 export class Timer extends Control {
   onTimeOut: () => void;

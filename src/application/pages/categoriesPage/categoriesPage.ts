@@ -1,7 +1,7 @@
-import Control from '../common/control';
-import { ICategoryData } from './quizDataModel';
-import { AnimatedControl } from './animatedControl';
-import { IQuizScore } from './gameFieldPage';
+import Control from '../../components/control';
+import { ICategoryData } from '../../services/types';
+import { AnimatedControl } from '../../components/animatedControl';
+import { IQuizScore } from '../gameFieldPage/gameFieldPage';
 import './categories.css';
 
 export class CategoriesPage extends AnimatedControl {

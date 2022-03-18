@@ -1,6 +1,6 @@
-import Control from '../common/control';
-import { AnimatedControl } from './animatedControl';
-import { IQuestionData } from './quizDataModel';
+import Control from '../../components/control';
+import { AnimatedControl } from '../../components/animatedControl';
+import { IQuestionData } from '../../services/types';
 
 import './pictureQuestion.css';
 

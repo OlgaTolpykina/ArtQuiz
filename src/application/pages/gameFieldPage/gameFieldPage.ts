@@ -1,9 +1,9 @@
-import Control from '../common/control';
-import { IQuizSettings } from './settingsPage';
-import { SoundManager } from './soundManager';
-import { AnimatedControl } from './animatedControl';
-import { IQuestionData } from './quizDataModel';
-import { Timer } from './timer';
+import Control from '../../components/control';
+import { IQuizSettings } from '../settingsPage/settingsPage';
+import { SoundManager } from '../../services/soundManager';
+import { AnimatedControl } from '../../components/animatedControl';
+import { IQuestionData } from '../../services/types';
+import { Timer } from '../../services/timer';
 // import { Modal } from './modal';
 
 import './modal.css';

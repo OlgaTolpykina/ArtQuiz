@@ -1,5 +1,5 @@
-import Control from '../common/control';
-import { AnimatedControl } from './animatedControl';
+import Control from '../../components/control';
+import { AnimatedControl } from '../../components/animatedControl';
 import './startPage.css';
 
 export class StartPage extends AnimatedControl {

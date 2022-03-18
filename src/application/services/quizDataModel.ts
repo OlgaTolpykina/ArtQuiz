@@ -1,53 +1,9 @@
-import imagesDataUrl from '../assets/json/images.json';
-
-interface IMultiLangString {
-  ru: string,
-  en: string
-}
-
-interface IPictureData {
-  year: number,
-  picture: number,
-  author: IMultiLangString,
-  name: IMultiLangString,
-}
-
-interface IImageDto {
-  year: string,
-  picture: string,
-  author: IMultiLangString,
-  name: IMultiLangString,
-}
-
-type IImagesDto = Record<string, IImageDto>
-
-export type IQuestions = Array<IQuestionData>;
-// export interface ICategoryQuestions {
-//   [key: number]: IQuestionData[] | null;
-// }
-export interface ICategoryData{
-  name: string;
-  picture: string;
-  questions: IQuestionData[];
-}
-
-export interface IQuestionData {
-  picturesAnswers: string[];
-  artistsAnswers: string[];
-  correctAnswerIndex: number;
-  artistName: string;
-  imgUrl: string;
-  correctAnswerYear: number;
-  correctAnswerPictureName: string;
-}
+import imagesDataUrl from '../../assets/json/images.json';
+import { IPictureData, ICategoryData, IQuestionData, IImagesDto } from './types';
 
 export class QuizDataModel {
   private questionsPerCategory = 10;
   data: Array<IPictureData>;
-
-  constructor() {
-
-  }
 
   public async build() {
     this.data = await this.loadImagesData(imagesDataUrl);
@@ -73,7 +29,6 @@ export class QuizDataModel {
   }
 
   public getQuestions(gameName: string, categoryIndex: number) {
-    // console.log(categoryIndex);
     const questionsPerCategory = this.questionsPerCategory;
     const result: Array<IQuestionData> = [];
     for (let i = categoryIndex * questionsPerCategory; i < ( categoryIndex + 1) * questionsPerCategory; i++) {
@@ -81,7 +36,6 @@ export class QuizDataModel {
       const artistsAnswers: Array<string> = [];
       const answersCount = 4;
       const correctAnswerIndex = Math.floor(Math.random() * answersCount);
-      // console.log(i);
       const correctPictureAnswer = `./public/img/${gameName}/${this.data[i].picture}.jpg`;
       const correctArtistsAnswer = this.data[i].author.ru;
       const correctAnswerYear = this.data[i].year;
