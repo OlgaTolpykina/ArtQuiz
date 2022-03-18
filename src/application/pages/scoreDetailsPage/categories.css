@@ -23,7 +23,7 @@
 
 .categories {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -41,7 +41,7 @@
 
 .category_score:hover {
   background-color: #fff;
-} 
+}
 
 .category_result {
   position: absolute;

@@ -1,9 +1,14 @@
 import Control from './control';
 
 export class AnimatedControl extends Control {
-  private styles: { default: string; hidden: string; };
+  private styles: { default: string; hidden: string };
 
-  constructor(parentNode: HTMLElement | null, tagName = 'div', styles: {default: string, hidden: string}, content = '') {
+  constructor(
+    parentNode: HTMLElement | null,
+    tagName = 'div',
+    styles: { default: string; hidden: string },
+    content = ''
+  ) {
     super(parentNode, tagName, styles.default, content);
     this.styles = styles;
   }
@@ -18,33 +23,37 @@ export class AnimatedControl extends Control {
 
   animateIn(): Promise<void> {
     return new Promise((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (!this.node.classList.contains(this.styles.hidden)) {
-          resolve(null);
-        }
-        this.node.classList.remove(this.styles.hidden);
-        this.node.ontransitionend = (e) => {
-          if (e.target !== this.node) return;
-          this.node.ontransitionend = null;
-          resolve(null);
-        }
-      }));
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          if (!this.node.classList.contains(this.styles.hidden)) {
+            resolve(null);
+          }
+          this.node.classList.remove(this.styles.hidden);
+          this.node.ontransitionend = (e) => {
+            if (e.target !== this.node) return;
+            this.node.ontransitionend = null;
+            resolve(null);
+          };
+        })
+      );
     });
   }
 
   animateOut(): Promise<void> {
     return new Promise((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (this.node.classList.contains(this.styles.hidden)) {
-          resolve(null);
-        }
-        this.node.classList.add(this.styles.hidden);
-        this.node.ontransitionend = (e) => {
-          if (e.target !== this.node) return;
-          this.node.ontransitionend = null;
-          resolve(null);
-        }
-      }));
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          if (this.node.classList.contains(this.styles.hidden)) {
+            resolve(null);
+          }
+          this.node.classList.add(this.styles.hidden);
+          this.node.ontransitionend = (e) => {
+            if (e.target !== this.node) return;
+            this.node.ontransitionend = null;
+            resolve(null);
+          };
+        })
+      );
     });
   }
 }

@@ -1,17 +1,11 @@
 class SoundManagerClass {
   private baseUrl = './public/sound/';
   private cache = new Map<string, Blob>();
-  private soundList: Array<string> = [
-    'ok',
-    'fail',
-  ];
-
-  constructor() {
-  }
+  private soundList: Array<string> = ['ok', 'fail'];
 
   preload() {
-    const results = Promise.all(this.soundList.map(it => this.preloadFile(`${this.baseUrl}${it}.mp3`)));
-    results.then(res => {
+    const results = Promise.all(this.soundList.map((it) => this.preloadFile(`${this.baseUrl}${it}.mp3`)));
+    results.then((res) => {
       this.soundList.forEach((soundName, i) => {
         this.cache.set(soundName, res[i]);
       });
@@ -19,7 +13,7 @@ class SoundManagerClass {
   }
 
   private preloadFile(url: string) {
-    return fetch(url).then(res => res.blob());
+    return fetch(url).then((res) => res.blob());
   }
 
   ok() {
@@ -32,7 +26,7 @@ class SoundManagerClass {
 
   playSound(name: string) {
     const cached = this.cache.get(name);
-    if(cached) {
+    if (cached) {
       const audio = new Audio(URL.createObjectURL(cached));
       // audio.play();
     } else {

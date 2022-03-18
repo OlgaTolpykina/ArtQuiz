@@ -7,7 +7,7 @@ export class StartPage extends AnimatedControl {
   onGameSelect: (gameName: string) => void;
 
   constructor(parentNode: HTMLElement) {
-    super (parentNode, 'div', { default: 'main_wrapper', hidden: 'hide'});
+    super(parentNode, 'div', { default: 'main_wrapper', hidden: 'hide' });
     this.quickOut();
 
     const selectWrapper = new Control(this.node, 'div', 'select_wrapper');

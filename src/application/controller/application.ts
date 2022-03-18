@@ -21,7 +21,7 @@ export class Application extends Control {
   gameFieldModel: GameFieldModel;
 
   constructor(parentNode: HTMLElement) {
-    super (parentNode, 'div', 'global_wrapper');
+    super(parentNode, 'div', 'global_wrapper');
 
     this.header = new Control(this.node, 'div', 'global_header');
     const title = new Control(this.header.node, 'h1', 'global_title', 'artquiz');
@@ -32,7 +32,7 @@ export class Application extends Control {
     this.settingsModel = new SettingsModel();
     this.settingsModel.loadFromStorage();
     this.model = new QuizDataModel();
-    this.model.build().then(result => {
+    this.model.build().then((result) => {
       preloader.destroy();
       this.mainCycle();
     });
@@ -44,83 +44,102 @@ export class Application extends Control {
     let gameField: GameFieldPage;
 
     if (gameName === 'artists') {
-      gameField = new GameFieldPage(this.main.node, ArtistQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
+      gameField = new GameFieldPage(
+        this.main.node,
+        ArtistQuestionView,
+        { gameName: gameName, categoryIndex: categoryIndex, settings: this.settingsModel.getData() },
+        questions
+      );
     } else if (gameName === 'pictures') {
-      gameField = new GameFieldPage(this.main.node, PictureQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
+      gameField = new GameFieldPage(
+        this.main.node,
+        PictureQuestionView,
+        { gameName: gameName, categoryIndex: categoryIndex, settings: this.settingsModel.getData() },
+        questions
+      );
     } else {
       throw new Error('Unknown game name' + gameName);
     }
     gameField.onHome = () => {
-      gameField.destroy()
+      gameField.destroy();
       this.mainCycle();
-    }
+    };
     gameField.onBack = () => {
       gameField.destroy();
       this.categoryCycle(gameName);
-    }
+    };
     gameField.onFinish = (result) => {
       gameField.destroy();
       const gameOverPage = new GameOverPage(this.main.node, result);
-      this.gameFieldModel.setData(categoryNameIndex
-        , result);
+      this.gameFieldModel.setData(categoryNameIndex, result);
       gameOverPage.onHome = () => {
         gameOverPage.destroy();
         this.mainCycle();
-      }
+      };
       gameOverPage.onNext = () => {
         gameOverPage.destroy();
         this.gameCycle(gameName, categoryIndex + 1, categoryNameIndex);
-      }
-    }
+      };
+    };
   }
 
   private scoreCycle(gameName: string, categoryIndex: number) {
     console.log(categoryIndex);
-    const scoreDetails = new ScoreDetailsPage(this.main.node, categoryIndex, this.model.getCategoriesData(gameName), this.gameFieldModel.getData()[categoryIndex + 1]);
+    const scoreDetails = new ScoreDetailsPage(
+      this.main.node,
+      categoryIndex,
+      this.model.getCategoriesData(gameName),
+      this.gameFieldModel.getData()[categoryIndex + 1]
+    );
     scoreDetails.animateIn();
     scoreDetails.onBack = () => {
       scoreDetails.animateOut().then(() => {
         scoreDetails.destroy();
         this.categoryCycle(gameName);
       });
-    }
+    };
   }
 
   private categoryCycle(gameName: string) {
-    const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData(gameName), this.gameFieldModel.getData());
-      categories.animateIn();
-      categories.onBack = () => {
-        categories.animateOut().then(() => {
-          categories.destroy();
-          this.mainCycle();
-        });
-      }
-      
-      categories.onSelect = (index) => {
-        const categoryNameIndex = this.model.getCategoriesData(gameName)[index];
-        categories.animateOut().then(() => {
-          categories.destroy()
-          this.gameCycle(gameName, index, categoryNameIndex.name);
-        });
-      }
+    const categories = new CategoriesPage(
+      this.main.node,
+      gameName,
+      this.model.getCategoriesData(gameName),
+      this.gameFieldModel.getData()
+    );
+    categories.animateIn();
+    categories.onBack = () => {
+      categories.animateOut().then(() => {
+        categories.destroy();
+        this.mainCycle();
+      });
+    };
 
-      categories.onScore = (index) => {
-        categories.animateOut().then(() => {
-          categories.destroy()
-          this.scoreCycle(gameName, index);
-        });
-      }
+    categories.onSelect = (index) => {
+      const categoryNameIndex = this.model.getCategoriesData(gameName)[index];
+      categories.animateOut().then(() => {
+        categories.destroy();
+        this.gameCycle(gameName, index, categoryNameIndex.name);
+      });
+    };
+
+    categories.onScore = (index) => {
+      categories.animateOut().then(() => {
+        categories.destroy();
+        this.scoreCycle(gameName, index);
+      });
+    };
   }
 
   private mainCycle() {
     const startPage = new StartPage(this.main.node);
     startPage.animateIn();
     startPage.onGameSelect = (gameName) => {
-      startPage.animateOut().then(() =>{
+      startPage.animateOut().then(() => {
         startPage.destroy();
         this.categoryCycle(gameName);
       });
-    }
+    };
     startPage.onSettings = () => {
       startPage.animateOut().then(() => {
         startPage.destroy();
@@ -129,14 +148,14 @@ export class Application extends Control {
         settingsPage.onBack = () => {
           settingsPage.destroy();
           this.mainCycle();
-        }
+        };
         settingsPage.onSave = (settings) => {
           console.log(settings);
           settingsPage.destroy();
           this.settingsModel.setData(settings);
           this.mainCycle();
-        }
+        };
       });
-    }
+    };
   }
 }

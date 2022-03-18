@@ -1,4 +1,4 @@
-class Control<NodeType extends HTMLElement = HTMLElement>{
+class Control<NodeType extends HTMLElement = HTMLElement> {
   public node: NodeType;
 
   constructor(parentNode: HTMLElement | null, tagName = 'div', className = '', content = '') {
@@ -14,7 +14,6 @@ class Control<NodeType extends HTMLElement = HTMLElement>{
   destroy(): void {
     this.node.remove();
   }
-  
 }
 
 export default Control;

@@ -5,9 +5,9 @@ export class Timer extends Control {
   timer: number;
   initialTime: number;
 
-  constructor(parentNode: HTMLElement) {
-    super(parentNode);
-  }
+  // constructor(parentNode: HTMLElement) {
+  //   super(parentNode);
+  // }
 
   start(time: number) {
     this.initialTime = time;
@@ -16,9 +16,9 @@ export class Timer extends Control {
     }
 
     let currentTime = time;
-    const render = (currentTime: number) => {
-      this.node.textContent = `${ this.initialTime } / ${ currentTime }`;
-    }
+    const render = (timeCurrent: number) => {
+      this.node.textContent = `${this.initialTime} / ${timeCurrent}`;
+    };
     render(time);
     this.timer = window.setInterval(() => {
       currentTime--;

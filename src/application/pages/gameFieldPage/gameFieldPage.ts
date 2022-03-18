@@ -28,7 +28,7 @@ export class GameFieldModel {
 
   loadFromStorage() {
     const storageData = localStorage.getItem('score');
-    if(!storageData) {
+    if (!storageData) {
       this.score = {};
     } else {
       const data: IQuizScore = JSON.parse(storageData);
@@ -39,7 +39,7 @@ export class GameFieldModel {
   getData() {
     return JSON.parse(JSON.stringify(this.score));
   }
-  
+
   setData(categoryIndex: string, data: Array<boolean>) {
     this.score[categoryIndex] = data;
     this.saveToStorage();
@@ -61,28 +61,33 @@ export class GameFieldPage extends Control {
   private GameQuestionConstructor: IQuestionViewConstructor;
   questionsData: IQuestionData[];
 
-  constructor(parentNode: HTMLElement, GameQuestionConstructor: IQuestionViewConstructor, gameOptions: IQuizOptions, questionsData: Array<IQuestionData>) {
-    super (parentNode);
+  constructor(
+    parentNode: HTMLElement,
+    GameQuestionConstructor: IQuestionViewConstructor,
+    gameOptions: IQuizOptions,
+    questionsData: Array<IQuestionData>
+  ) {
+    super(parentNode);
     this.GameQuestionConstructor = GameQuestionConstructor;
     this.gameOptions = gameOptions;
     this.questionsData = questionsData;
     const header = new Control(this.node, 'h1', '', `${gameOptions.gameName} - ${gameOptions.categoryIndex}`);
-    
+
     const backButton = new Control(this.node, 'button', '', 'back');
     backButton.node.onclick = () => {
       this.onBack();
-    }
+    };
 
     const homeButton = new Control(this.node, 'button', '', 'home');
     homeButton.node.onclick = () => {
       this.onHome();
-    }
+    };
 
     this.timer = new Timer(this.node);
     this.progressIndicator = new Control(this.node, 'div', '', '');
 
-    this.results = []; 
-    
+    this.results = [];
+
     this.questionCycle(gameOptions.gameName, questionsData, 0, () => {
       this.onFinish(this.results);
     });
@@ -102,12 +107,12 @@ export class GameFieldPage extends Control {
         this.results.push(false);
         SoundManager.fail();
         this.questionCycle(gameName, questions, index + 1, onFinish);
-      }
+      };
     }
 
     const question = new this.GameQuestionConstructor(this.node, questions[index]);
     const pagination = new Control(question.node, 'div', 'pagination');
-    questions.forEach((question, i) => {
+    questions.forEach((item, i) => {
       const paginationItem = new Control(pagination.node, 'div', `pagination_item`, '');
       if (this.results[i] === true) {
         paginationItem.node.classList.add('right');
@@ -119,11 +124,11 @@ export class GameFieldPage extends Control {
     question.animateIn();
     question.onAnswer = (answerIndex) => {
       const correctAnswerIndex = questions[index].correctAnswerIndex;
-      
+
       const overlay = new Control(this.node, 'div', 'overlay', '');
       const modal = new Control(this.node, 'div', 'modal modal_content', '');
       const answerIndicator = new Control(modal.node, 'div', 'answer_indicator', '');
-     
+
       const picture = new Control(modal.node, 'div', '', '');
       const pictureImg = new Image(300, 300);
       pictureImg.src = questions[index].imgUrl;
@@ -150,9 +155,9 @@ export class GameFieldPage extends Control {
           overlay.destroy();
           question.destroy();
           this.questionCycle(gameName, questions, index + 1, onFinish);
-      });
-      }
-    }
+        });
+      };
+    };
   }
 
   destroy(): void {
@@ -162,8 +167,8 @@ export class GameFieldPage extends Control {
 }
 
 interface IQuestionView {
-  onAnswer:(index:number)=>void;
+  onAnswer: (index: number) => void;
 }
-interface IQuestionViewConstructor{
-  new (parentNode:HTMLElement, data:IQuestionData): IQuestionView & AnimatedControl;
+interface IQuestionViewConstructor {
+  new (parentNode: HTMLElement, data: IQuestionData): IQuestionView & AnimatedControl;
 }

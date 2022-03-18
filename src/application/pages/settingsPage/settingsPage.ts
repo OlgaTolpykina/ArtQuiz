@@ -8,18 +8,14 @@ export interface IQuizSettings {
 const defaultSettings: IQuizSettings = {
   time: 10,
   timeEnable: false,
-}
+};
 
 export class SettingsModel {
   private settings: IQuizSettings;
 
-  constructor() {
-
-  }
-
   loadFromStorage() {
     const storageData = localStorage.getItem('settings');
-    if(!storageData) {
+    if (!storageData) {
       this.settings = defaultSettings;
     } else {
       const data: IQuizSettings = JSON.parse(storageData);
@@ -30,7 +26,7 @@ export class SettingsModel {
   getData() {
     return JSON.parse(JSON.stringify(this.settings));
   }
-  
+
   setData(data: IQuizSettings) {
     this.settings = data;
     this.saveToStorage();
@@ -46,7 +42,7 @@ export class SettingsPage extends Control {
   onSave: (settings: IQuizSettings) => void;
 
   constructor(parentNode: HTMLElement, initialSettings: IQuizSettings) {
-    super (parentNode);
+    super(parentNode);
 
     const settings: IQuizSettings = initialSettings;
 
@@ -58,23 +54,23 @@ export class SettingsPage extends Control {
     timeInput.node.value = settings.time.toString();
     timeInput.node.oninput = () => {
       settings.time = timeInput.node.valueAsNumber;
-    }
+    };
 
     const timeCheck = new Control<HTMLInputElement>(this.node, 'input', '');
     timeCheck.node.type = 'checkbox';
     timeCheck.node.checked = settings.timeEnable;
     timeCheck.node.oninput = () => {
       settings.timeEnable = timeCheck.node.checked;
-    }
+    };
 
     const backButton = new Control(this.node, 'button', '', 'back');
     backButton.node.onclick = () => {
       this.onBack();
-    }
+    };
 
     const saveButton = new Control(this.node, 'button', '', 'save');
     saveButton.node.onclick = () => {
       this.onSave(settings);
-    }
+    };
   }
 }

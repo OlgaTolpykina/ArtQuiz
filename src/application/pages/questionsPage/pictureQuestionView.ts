@@ -8,10 +8,10 @@ export class PictureQuestionView extends AnimatedControl {
   onAnswer: (index: number) => void;
 
   constructor(parentNode: HTMLElement, questionData: IQuestionData) {
-    super (parentNode, 'div', { default: 'wrapper', hidden: 'hide'});
+    super(parentNode, 'div', { default: 'wrapper', hidden: 'hide' });
     this.quickOut();
 
-    const question = new Control(this.node, 'div', '', questionData.artistName)
+    const question = new Control(this.node, 'div', '', questionData.artistName);
     const answerButtons = questionData.picturesAnswers.map((it, i) => {
       const button = new Control(this.node, 'button', '', i.toString());
       const img = new Image(200, 200);
@@ -19,7 +19,7 @@ export class PictureQuestionView extends AnimatedControl {
       button.node.append(img);
       button.node.onclick = () => {
         this.onAnswer(i);
-      }
-    })
+      };
+    });
   }
 }

@@ -8,7 +8,7 @@ export class ArtistQuestionView extends AnimatedControl {
   onAnswer: (index: number) => void;
 
   constructor(parentNode: HTMLElement, questionData: IQuestionData) {
-    super (parentNode, 'div', { default: 'wrapper', hidden: 'hide'});
+    super(parentNode, 'div', { default: 'wrapper', hidden: 'hide' });
     this.quickOut();
 
     const question = new Control(this.node, 'div', '', 'Вопрос?');
@@ -19,7 +19,7 @@ export class ArtistQuestionView extends AnimatedControl {
       const button = new Control(this.node, 'button', '', it.toString());
       button.node.onclick = () => {
         this.onAnswer(i);
-      }
-    })
+      };
+    });
   }
 }

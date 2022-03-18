@@ -4,6 +4,6 @@ declare module '*.json' {
 }
 
 declare module '*.css' {
-  const res: Record<string, string>
+  const res: Record<string, string>;
   export default res;
 }
