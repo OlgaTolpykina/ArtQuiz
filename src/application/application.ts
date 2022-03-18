@@ -4,7 +4,7 @@ import { SettingsModel, SettingsPage } from './settingsPage';
 import { GameFieldPage, GameFieldModel } from './gameFieldPage';
 import { GameOverPage } from './gameOverPage';
 import { StartPage } from './startPage';
-import { IArtistsQuestionData, IPicturesQuestionData, QuizDataModel } from './quizDataModel';
+import { QuizDataModel } from './quizDataModel';
 import { SoundManager } from './soundManager';
 
 import './application.css';
@@ -39,15 +39,13 @@ export class Application extends Control {
   }
 
   private gameCycle(gameName: string, categoryIndex: number, categoryNameIndex: string) {
-    let questions: Array<any>;
-    let gameField: GameFieldPage<unknown>;
+    const questions = this.model.getQuestions(categoryIndex);
+    let gameField: GameFieldPage;
 
     if (gameName === 'artists') {
-      questions = this.model.getArtistsQuestion(categoryIndex);
-      gameField = new GameFieldPage<IArtistsQuestionData>(this.main.node, ArtistQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
+      gameField = new GameFieldPage(this.main.node, ArtistQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
     } else if (gameName === 'pictures') {
-      questions = this.model.getPicturesQuestions(categoryIndex);
-      gameField = new GameFieldPage<IPicturesQuestionData>(this.main.node, PictureQuestionView,{ gameName: gameName, categoryIndex: categoryIndex, settings: this.settingsModel.getData() }, questions);
+      gameField = new GameFieldPage(this.main.node, PictureQuestionView, {gameName: gameName, categoryIndex: categoryIndex, settings:this.settingsModel.getData()}, questions);
     } else {
       throw new Error('Unknown game name' + gameName);
     }

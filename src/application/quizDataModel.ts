@@ -27,19 +27,12 @@ export interface ICategoryData{
   score?: Array<boolean>;
 }
 
-export interface IArtistsQuestionData {
-  answers: string[];
-  correctAnswerIndex: number;
-  artistImgUrl: string;
-  artistName: string;
-  correctAnswerYear: number;
-  correctAnswerPictureName: string;
-}
-
-export interface IPicturesQuestionData {
-  answers: string[];
+export interface IQuestionData {
+  picturesAnswers: string[];
+  artistsAnswers: string[];
   correctAnswerIndex: number;
   artistName: string;
+  imgUrl: string;
   correctAnswerYear: number;
   correctAnswerPictureName: string;
 }
@@ -75,60 +68,39 @@ export class QuizDataModel {
     return categories;
   }
 
-  public getPicturesQuestions(categoryIndex: number) {
+  public getQuestions(categoryIndex: number) {
     const questionsPerCategory = this.questionsPerCategory;
-    const result: Array<IPicturesQuestionData> = [];
+    const result: Array<IQuestionData> = [];
     for (let i = categoryIndex * questionsPerCategory; i < ( categoryIndex + 1) * questionsPerCategory; i++) {
-      const answers: Array<string> = [];
+      const picturesAnswers: Array<string> = [];
+      const artistsAnswers: Array<string> = [];
       const answersCount = 4;
       const correctAnswerIndex = Math.floor(Math.random() * answersCount);
-      const correctAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      const correctPictureAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      const correctArtistsAnswer = this.data[i].author.ru;
       const correctAnswerYear = this.data[i].year;
       const correctAnswerPictureName = this.data[i].name.ru;
       for(let j=0; j < answersCount; j++) {
         if(correctAnswerIndex === j) {
-          answers.push(correctAnswer);
+          picturesAnswers.push(correctPictureAnswer);
+          artistsAnswers.push(correctArtistsAnswer);
         } else {
           const randomImage = this.data[Math.floor(Math.random() * this.data.length)].picture;
           const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
-          answers.push(variantUrl);
+          picturesAnswers.push(variantUrl);
+
+          const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
+          artistsAnswers.push(randomName.ru);
         }
       }
-      const question: IPicturesQuestionData = {
+      const question: IQuestionData = {
+        imgUrl: `./public/img/pictures/${this.data[i].picture}.jpg`,
         artistName: this.data[i].author.ru,
-        answers: answers,
+        picturesAnswers: picturesAnswers,
+        artistsAnswers: artistsAnswers,
         correctAnswerIndex: correctAnswerIndex,
         correctAnswerYear: correctAnswerYear,
         correctAnswerPictureName: correctAnswerPictureName,
-      }
-      result.push(question);
-    }
-    return result;
-  }
-
-  public getArtistsQuestion(categoryIndex: number) {
-    const questionsPerCategory = this.questionsPerCategory;
-    const result: Array<IArtistsQuestionData> = [];
-    for (let i = categoryIndex * questionsPerCategory; i < ( categoryIndex + 1) * questionsPerCategory; i++) {
-      const answers: Array<string> = [];
-      const answersCount = 4;
-      const correctAnswerIndex = Math.floor(Math.random() * answersCount);
-      const correctAnswer = this.data[i].author.ru;
-      for(let j=0; j < answersCount; j++) {
-        if(correctAnswerIndex === j) {
-          answers.push(correctAnswer);
-        } else {
-          const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
-          answers.push(randomName.ru);
-        }
-      }
-      const question: IArtistsQuestionData = {
-        artistImgUrl: `./public/img/pictures/${this.data[i].picture}.jpg`,
-        answers: answers,
-        correctAnswerIndex: correctAnswerIndex,
-        artistName: this.data[i].author.ru,
-        correctAnswerYear: this.data[i].year,
-        correctAnswerPictureName: this.data[i].name.ru,
       }
       result.push(question);
     }

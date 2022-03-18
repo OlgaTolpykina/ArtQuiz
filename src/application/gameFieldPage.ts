@@ -1,8 +1,8 @@
 import Control from '../common/control';
-
 import { IQuizSettings } from './settingsPage';
 import { SoundManager } from './soundManager';
 import { AnimatedControl } from './animatedControl';
+import { IQuestionData } from './quizDataModel';
 import { Timer } from './timer';
 // import { Modal } from './modal';
 
@@ -50,19 +50,18 @@ export class GameFieldModel {
   }
 }
 
-export class GameFieldPage<QuestionDataType> extends Control {
+export class GameFieldPage extends Control {
   onBack: () => void;
   onHome: () => void;
   onFinish: (results: IQuizResults) => void;
   progressIndicator: Control<HTMLElement>;
   results: IQuizResults;
-  // answersIndicator: Control<HTMLElement>;
   timer: Timer;
   gameOptions: IQuizOptions;
-  private GameQuestionConstructor: IQuestionViewConstructor<QuestionDataType>;
-  questionsData: QuestionDataType[];
+  private GameQuestionConstructor: IQuestionViewConstructor;
+  questionsData: IQuestionData[];
 
-  constructor(parentNode: HTMLElement, GameQuestionConstructor: IQuestionViewConstructor<QuestionDataType>, gameOptions: IQuizOptions, questionsData: Array<QuestionDataType>) {
+  constructor(parentNode: HTMLElement, GameQuestionConstructor: IQuestionViewConstructor, gameOptions: IQuizOptions, questionsData: Array<IQuestionData>) {
     super (parentNode);
     this.GameQuestionConstructor = GameQuestionConstructor;
     this.gameOptions = gameOptions;
@@ -89,7 +88,7 @@ export class GameFieldPage<QuestionDataType> extends Control {
     });
   }
 
-  questionCycle(gameName: string, questions: Array<any>, index: number, onFinish: () => void) {
+  questionCycle(gameName: string, questions: Array<IQuestionData>, index: number, onFinish: () => void) {
     if (index >= questions.length) {
       onFinish();
       return;
@@ -124,19 +123,15 @@ export class GameFieldPage<QuestionDataType> extends Control {
       const overlay = new Control(this.node, 'div', 'overlay', '');
       const modal = new Control(this.node, 'div', 'modal modal_content', '');
       const answerIndicator = new Control(modal.node, 'div', 'answer_indicator', '');
+     
       const picture = new Control(modal.node, 'div', '', '');
       const pictureImg = new Image(300, 300);
-      if (this.gameOptions.gameName === 'pictures') {
-        pictureImg.src = questions[index].answers[correctAnswerIndex];
-      } else if (this.gameOptions.gameName === 'artists') {
-        pictureImg.src = questions[index].artistImgUrl;
-      } else {
-        throw new Error('Unknown game name' + this.gameOptions.gameName);
-      }
+      pictureImg.src = questions[index].imgUrl;
       picture.node.append(pictureImg);
+
       const pictureName = new Control(modal.node, 'div', '', questions[index].correctAnswerPictureName);
       const artistName = new Control(modal.node, 'div', '', questions[index].artistName);
-      const pictureYear = new Control(modal.node, 'div', '', questions[index].correctAnswerYear);
+      const pictureYear = new Control(modal.node, 'div', '', questions[index].correctAnswerYear.toString());
 
       const result = answerIndex === correctAnswerIndex;
       this.results.push(result);
@@ -169,6 +164,6 @@ export class GameFieldPage<QuestionDataType> extends Control {
 interface IQuestionView {
   onAnswer:(index:number)=>void;
 }
-interface IQuestionViewConstructor<DataType>{
-  new (parentNode:HTMLElement, data:DataType): IQuestionView & AnimatedControl;
+interface IQuestionViewConstructor{
+  new (parentNode:HTMLElement, data:IQuestionData): IQuestionView & AnimatedControl;
 }
