@@ -1,13 +1,13 @@
 import Control from '../common/control';
 import { ICategoryData } from './quizDataModel';
 import { AnimatedControl } from './animatedControl';
-import { IQuizResults } from './gameFieldPage';
 import { IQuizScore } from './gameFieldPage';
 import './categories.css';
 
 export class CategoriesPage extends AnimatedControl {
   onBack: () => void;
   onSelect: (index: number) => void;
+  onScore: (index: number) => void;
 
   constructor(parentNode: HTMLElement, gameName: string, quizCategoriesData:Array<ICategoryData>, quizScoreData: IQuizScore) {
     super (parentNode, 'div', {default: 'categories_page', hidden: 'hide'});
@@ -18,7 +18,7 @@ export class CategoriesPage extends AnimatedControl {
     backButton.node.onclick = () => {
       this.onBack();
     }
-
+    
     const categoriesContainer = new Control(this.node, 'div', 'categories');
     const categoryButtons  = quizCategoriesData.map((it, i) => {
       return new CategoryItem(categoriesContainer.node, it, quizScoreData, (i + 1).toString(), {
@@ -26,7 +26,7 @@ export class CategoriesPage extends AnimatedControl {
           this.onSelect(i);
         },
         onScore: () => {
-          console.log('score', i);
+          this.onScore(i);
         }
       });
     });

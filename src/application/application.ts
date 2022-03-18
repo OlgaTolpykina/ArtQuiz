@@ -10,6 +10,7 @@ import { SoundManager } from './soundManager';
 import './application.css';
 import { ArtistQuestionView } from './artistQuestionView';
 import { PictureQuestionView } from './pictureQuestionView';
+import { ScoreDetailsPage } from './scoreDetailsPage';
 
 export class Application extends Control {
   private model: QuizDataModel;
@@ -39,7 +40,7 @@ export class Application extends Control {
   }
 
   private gameCycle(gameName: string, categoryIndex: number, categoryNameIndex: string) {
-    const questions = this.model.getQuestions(categoryIndex);
+    const questions = this.model.getQuestions(gameName, categoryIndex);
     let gameField: GameFieldPage;
 
     if (gameName === 'artists') {
@@ -73,6 +74,18 @@ export class Application extends Control {
     }
   }
 
+  private scoreCycle(gameName: string, categoryIndex: number) {
+    console.log(categoryIndex);
+    const scoreDetails = new ScoreDetailsPage(this.main.node, categoryIndex, this.model.getCategoriesData(gameName), this.gameFieldModel.getData()[categoryIndex + 1]);
+    scoreDetails.animateIn();
+    scoreDetails.onBack = () => {
+      scoreDetails.animateOut().then(() => {
+        scoreDetails.destroy();
+        this.categoryCycle(gameName);
+      });
+    }
+  }
+
   private categoryCycle(gameName: string) {
     const categories = new CategoriesPage(this.main.node, gameName, this.model.getCategoriesData(gameName), this.gameFieldModel.getData());
       categories.animateIn();
@@ -88,6 +101,13 @@ export class Application extends Control {
         categories.animateOut().then(() => {
           categories.destroy()
           this.gameCycle(gameName, index, categoryNameIndex.name);
+        });
+      }
+
+      categories.onScore = (index) => {
+        categories.animateOut().then(() => {
+          categories.destroy()
+          this.scoreCycle(gameName, index);
         });
       }
   }

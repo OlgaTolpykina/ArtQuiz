@@ -21,10 +21,14 @@ interface IImageDto {
 
 type IImagesDto = Record<string, IImageDto>
 
+export type IQuestions = Array<IQuestionData>;
+// export interface ICategoryQuestions {
+//   [key: number]: IQuestionData[] | null;
+// }
 export interface ICategoryData{
   name: string;
   picture: string;
-  score?: Array<boolean>;
+  questions: IQuestionData[];
 }
 
 export interface IQuestionData {
@@ -61,14 +65,15 @@ export class QuizDataModel {
       const categoryData: ICategoryData = {
         name: i.toString(),
         picture: pictureUrl,
-        score: new Array(categoriesCount).fill(false),
+        questions: this.getQuestions(gameName, i - 1),
       }
       categories.push(categoryData);
     }
     return categories;
   }
 
-  public getQuestions(categoryIndex: number) {
+  public getQuestions(gameName: string, categoryIndex: number) {
+    // console.log(categoryIndex);
     const questionsPerCategory = this.questionsPerCategory;
     const result: Array<IQuestionData> = [];
     for (let i = categoryIndex * questionsPerCategory; i < ( categoryIndex + 1) * questionsPerCategory; i++) {
@@ -76,7 +81,8 @@ export class QuizDataModel {
       const artistsAnswers: Array<string> = [];
       const answersCount = 4;
       const correctAnswerIndex = Math.floor(Math.random() * answersCount);
-      const correctPictureAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      // console.log(i);
+      const correctPictureAnswer = `./public/img/${gameName}/${this.data[i].picture}.jpg`;
       const correctArtistsAnswer = this.data[i].author.ru;
       const correctAnswerYear = this.data[i].year;
       const correctAnswerPictureName = this.data[i].name.ru;
@@ -86,7 +92,7 @@ export class QuizDataModel {
           artistsAnswers.push(correctArtistsAnswer);
         } else {
           const randomImage = this.data[Math.floor(Math.random() * this.data.length)].picture;
-          const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
+          const variantUrl = `./public/img/${gameName}/${randomImage}.jpg`;
           picturesAnswers.push(variantUrl);
 
           const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
