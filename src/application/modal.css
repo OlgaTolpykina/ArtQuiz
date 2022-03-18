@@ -37,6 +37,12 @@
   background-repeat: no-repeat;
 }
 
+.answer_indicator.score_details {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .pagination {
   display: flex;
   position: absolute;

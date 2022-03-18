@@ -3,6 +3,7 @@ import { ICategoryData, IQuestionData } from './quizDataModel';
 import { AnimatedControl } from './animatedControl';
 import { IQuizResults, IQuizScore } from './gameFieldPage';
 import './categories.css';
+import './modal.css';
 
 export class ScoreDetailsPage extends AnimatedControl {
   onBack: () => void;
@@ -29,8 +30,12 @@ class QuestionItem extends Control {
     super(parentNode, 'div', 'category');
     const button = new Control(this.node, 'div', 'category_img');
     button.node.style.backgroundImage = `url('${data.imgUrl}')`;
+    const answerIndicator = new Control(this.node, 'div', 'answer_indicator score_details', '');
     if (!result) {
       button.node.classList.add('filter');
+      answerIndicator.node.style.backgroundImage = 'url("./public/img/wrong_img.png")';
+    } else {
+      answerIndicator.node.style.backgroundImage = 'url("./public/img/right_img.png")';
     }
     button.node.onclick = () => {
       const infoWrapper = new Control(this.node, 'div', 'answer_info', '');
@@ -38,11 +43,5 @@ class QuestionItem extends Control {
       const artistPictureName = new Control(infoWrapper.node, 'p', '', data.correctAnswerPictureName);
       const correctAnswerYear = new Control(infoWrapper.node, 'p', '', data.correctAnswerPictureName);
     }
-
-    // if (scoreData[data.name]) {
-    //   const result = new Control(this.node, 'div', 'category_result', '');
-    //   const correctAnswers = scoreData[data.name].filter(result => result).length;
-    //   result.node.textContent = correctAnswers.toString();
-    // }
   }
 }
