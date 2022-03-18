@@ -44,17 +44,22 @@ class CategoryItem extends Control {
 
     const button = new Control(this.node, 'div', 'category_img', categoryName);
     button.node.style.backgroundImage = `url('${data.picture}')`;
-    
     if (!scoreData[data.name]) {
       button.node.classList.add('filter');
     }
-    
     button.node.onclick = () => {
       controller.onSelect();
     }
-    const score = new Control(this.node, 'div', 'category_score', 'score');
-    score.node.onclick = () => {
-      controller.onScore();
+
+    if (scoreData[data.name]) {
+      const result = new Control(this.node, 'div', 'category_result', '');
+      const correctAnswers = scoreData[data.name].filter(result => result).length;
+      result.node.textContent = correctAnswers.toString();
+
+      const score = new Control(this.node, 'div', 'category_score', 'score');
+      score.node.onclick = () => {
+        controller.onScore();
+      }
     }
   }
 }

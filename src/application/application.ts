@@ -51,7 +51,6 @@ export class Application extends Control {
     } else {
       throw new Error('Unknown game name' + gameName);
     }
-
     gameField.onHome = () => {
       gameField.destroy()
       this.mainCycle();
@@ -63,7 +62,8 @@ export class Application extends Control {
     gameField.onFinish = (result) => {
       gameField.destroy();
       const gameOverPage = new GameOverPage(this.main.node, result);
-      this.gameFieldModel.setData(categoryNameIndex, result);
+      this.gameFieldModel.setData(categoryNameIndex
+        , result);
       gameOverPage.onHome = () => {
         gameOverPage.destroy();
         this.mainCycle();

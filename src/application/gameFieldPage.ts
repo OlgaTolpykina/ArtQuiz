@@ -42,8 +42,6 @@ export class GameFieldModel {
   
   setData(categoryIndex: string, data: Array<boolean>) {
     this.score[categoryIndex] = data;
-    console.log('categoryIndex', categoryIndex);
-    console.log('this.score', this.score);
     this.saveToStorage();
   }
 

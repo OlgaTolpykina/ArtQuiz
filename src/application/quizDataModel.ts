@@ -61,8 +61,8 @@ export class QuizDataModel {
     const questionsPerCategory = this.questionsPerCategory;
     const categoriesCount = Math.floor( this.data.length / questionsPerCategory);
     const categories: Array<ICategoryData> = [];
-    let minIndex = (gameName === 'pictures') ? 1 : categoriesCount / 2;
-    let maxIndex = (gameName === 'pictures') ? categoriesCount / 2 : categoriesCount - 1;
+    let minIndex = (gameName === 'pictures') ? 1 : (categoriesCount / 2 + 1);
+    let maxIndex = (gameName === 'pictures') ? categoriesCount / 2 : categoriesCount;
     for (let i = minIndex; i <= maxIndex; i++ ) {
       const pictureUrl = `./public/img/pictures/${i * questionsPerCategory}.jpg`;
       const categoryData: ICategoryData = {
