@@ -10,7 +10,6 @@ import { ScoreDetailsPage } from '../pages/scoreDetailsPage/scoreDetailsPage';
 import { QuizDataModel } from '../services/quizDataModel';
 import { SoundManager } from '../services/soundManager';
 import footer from '../components/footer/footer';
-import '../components/footer/footer.css';
 import './application.css';
 
 export class Application extends Control {
@@ -20,14 +19,18 @@ export class Application extends Control {
   main: Control<HTMLElement>;
   gameFieldModel: GameFieldModel;
   settingsButton: Control<HTMLElement>;
+  logo: Control<HTMLElement>;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'global_wrapper');
 
     this.header = new Control(this.node, 'div', 'global_header');
-    this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
+    this.logo = new Control(this.header.node, 'div', 'logo-small');
+    this.settingsButton = new Control(this.header.node, 'div', 'settings', '');
+
     this.main = new Control(this.node, 'div', 'global_main');
     this.node.append(footer.getTemplate());
+
     const preloader = new Control(this.node, 'div', '', 'loading....');
     SoundManager.preload();
     this.settingsModel = new SettingsModel();
@@ -41,6 +44,7 @@ export class Application extends Control {
   }
 
   private gameCycle(gameName: string, categoryIndex: number, categoryNameIndex: string) {
+    this.logo.node.style.backgroundImage = '';
     const questions = this.model.getQuestions(gameName, categoryIndex);
     let gameField: GameFieldPage;
 
@@ -102,8 +106,9 @@ export class Application extends Control {
 
   private categoryCycle(gameName: string) {
     this.node.style.backgroundImage = '';
-    console.log(this.header.node.children.length);
-    if (!this.header.node.children.length) this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
+    this.logo.node.style.backgroundImage = 'url("./public/img/logo-small.png")';
+    if (this.header.node.children.length < 2)
+      this.settingsButton = new Control(this.header.node, 'div', 'settings', '');
     const categories = new CategoriesPage(
       this.main.node,
       gameName,
@@ -140,12 +145,13 @@ export class Application extends Control {
         categories.destroy();
 
         this.settingsHandler('category', gameName);
-    });
+      });
+    };
   }
-} 
 
   private mainCycle() {
-    if (!this.settingsButton) this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
+    this.logo.node.style.backgroundImage = '';
+    if (!this.settingsButton) this.settingsButton = new Control(this.header.node, 'div', 'settings', '');
     const startPage = new StartPage(this.main.node);
     this.node.style.backgroundImage = 'url("./public/img/background.jpg")';
     startPage.animateIn();
@@ -155,22 +161,12 @@ export class Application extends Control {
         this.categoryCycle(gameName);
       });
     };
-    // startPage.onSettings = () => {
+
     this.settingsButton.node.onclick = () => {
       startPage.animateOut().then(() => {
         startPage.destroy();
 
         this.settingsHandler('main');
-        // const settingsPage = new SettingsPage(this.main.node, this.settingsModel.getData());
-        // settingsPage.onBack = () => {
-        //   settingsPage.destroy();
-        //   this.mainCycle();
-        // };
-        // settingsPage.onSave = (settings) => {
-        //   settingsPage.destroy();
-        //   this.settingsModel.setData(settings);
-        //   this.mainCycle();
-        // };
       });
     };
   }

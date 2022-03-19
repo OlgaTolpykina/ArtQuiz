@@ -2,8 +2,8 @@ import Control from '../../components/control';
 import { ICategoryData, IQuestionData } from '../../services/types';
 import { AnimatedControl } from '../../components/animatedControl';
 import { IQuizResults, IQuizScore } from '../gameFieldPage/gameFieldPage';
-import './categories.css';
-import './modal.css';
+// import './categories.css';
+// import './modal.css';
 
 export class ScoreDetailsPage extends AnimatedControl {
   onBack: () => void;
@@ -18,7 +18,7 @@ export class ScoreDetailsPage extends AnimatedControl {
     this.quickOut();
     const headerWrapper = new Control(this.node, 'div', 'head_panel');
     const backButton = new Control(headerWrapper.node, 'button', 'button_back', 'back');
-    const header = new Control(headerWrapper.node, 'h1', 'head_name', 'score');
+    const header = new Control(headerWrapper.node, 'h1', 'head_name', 'результат');
     backButton.node.onclick = () => {
       this.onBack();
     };
@@ -33,7 +33,7 @@ export class ScoreDetailsPage extends AnimatedControl {
 class QuestionItem extends Control {
   constructor(parentNode: HTMLElement, data: IQuestionData, result: boolean) {
     super(parentNode, 'div', 'category');
-    const button = new Control(this.node, 'div', 'category_img');
+    const button = new Control(this.node, 'div', 'score_img');
     button.node.style.backgroundImage = `url('${data.imgUrl}')`;
     const answerIndicator = new Control(this.node, 'div', 'answer_indicator score_details', '');
     if (!result) {
@@ -43,10 +43,15 @@ class QuestionItem extends Control {
       answerIndicator.node.style.backgroundImage = 'url("./public/img/right_img.png")';
     }
     button.node.onclick = () => {
-      const infoWrapper = new Control(this.node, 'div', 'answer_info', '');
-      const artistName = new Control(infoWrapper.node, 'p', '', data.artistName);
-      const artistPictureName = new Control(infoWrapper.node, 'p', '', data.correctAnswerPictureName);
-      const correctAnswerYear = new Control(infoWrapper.node, 'p', '', data.correctAnswerPictureName);
+      const infoWrapper = new Control(this.node, 'div', 'answer_info details_wrapper', '');
+      const artistName = new Control(infoWrapper.node, 'p', 'picture_details', data.artistName);
+      const artistPictureName = new Control(infoWrapper.node, 'p', 'picture_details', data.correctAnswerPictureName);
+      const correctAnswerYear = new Control(
+        infoWrapper.node,
+        'p',
+        'picture_details',
+        data.correctAnswerYear.toString()
+      );
     };
   }
 }

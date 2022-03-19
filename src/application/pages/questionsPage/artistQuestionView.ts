@@ -11,12 +11,12 @@ export class ArtistQuestionView extends AnimatedControl {
     super(parentNode, 'div', { default: 'wrapper', hidden: 'hide' });
     this.quickOut();
 
-    const question = new Control(this.node, 'div', '', 'Вопрос?');
-    const img = new Image(200, 200);
-    img.src = questionData.imgUrl;
-    question.node.append(img);
+    const question = new Control(this.node, 'div', 'question_title', 'Кто автор данной картины?');
+    const questionImg = new Control(this.node, 'div', 'artists_img', '');
+    questionImg.node.style.backgroundImage = `url("${questionData.imgUrl}")`;
+    const answersWrapper = new Control(this.node, 'div', 'artists_answers', '');
     const answerButtons = questionData.artistsAnswers.map((it, i) => {
-      const button = new Control(this.node, 'button', '', it.toString());
+      const button = new Control(answersWrapper.node, 'button', 'artists_answer', it.toString());
       button.node.onclick = () => {
         this.onAnswer(i);
       };

@@ -1,0 +1,47 @@
+button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.button {
+  position: absolute;
+  &_back {
+    top: 25px;
+    left: 5px;
+    &::before {
+      content: "\2190";
+      color: $color-text-on-dark;
+      font-size: 35px;
+      cursor: pointer;
+    }
+    &:hover::before {
+      color: $color-active; 
+     }
+  }
+  &_questions {
+    top: 13px;
+  }
+  &_home {
+    left: 200px;
+    top: 30px;
+    color: $color-text-on-dark;
+    font-size: 20px;
+    text-transform: capitalize;
+  }
+  &_exit {
+    width: 36px;
+    height: 36px;
+    background-image: url("../assets/img/svg/exit.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.8s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transform: rotate(180deg);  
+    }
+  }
+  &:hover {
+    color: $color-active;
+  }
+}

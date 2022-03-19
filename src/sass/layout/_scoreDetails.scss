@@ -1,0 +1,20 @@
+.answer_info.details_wrapper {
+  width: 170px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: $color-background-transparent;
+}
+
+.picture_details {
+  text-align: center;
+  margin: 10px;
+  min-height: 45px;
+}
+
+.score_img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+}

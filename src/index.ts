@@ -1,4 +1,4 @@
 import { Application } from './application/controller/application';
-import './style.css';
+import './sass/style.scss';
 
 const app = new Application(document.body);

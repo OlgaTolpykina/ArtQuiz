@@ -60,6 +60,7 @@ export class GameFieldPage extends Control {
   gameOptions: IQuizOptions;
   private GameQuestionConstructor: IQuestionViewConstructor;
   questionsData: IQuestionData[];
+  timerWrapper: Control<HTMLElement>;
 
   constructor(
     parentNode: HTMLElement,
@@ -67,24 +68,30 @@ export class GameFieldPage extends Control {
     gameOptions: IQuizOptions,
     questionsData: Array<IQuestionData>
   ) {
-    super(parentNode);
+    super(parentNode, 'div', 'content_wrapper');
     this.GameQuestionConstructor = GameQuestionConstructor;
     this.gameOptions = gameOptions;
     this.questionsData = questionsData;
-    const header = new Control(this.node, 'h1', '', `${gameOptions.gameName} - ${gameOptions.categoryIndex}`);
+    const gameType = gameOptions.gameName === 'pictures' ? 'картины' : 'художники';
+    const header = new Control(
+      this.node,
+      'h1',
+      'head_name uppercase',
+      `${gameType} - ${gameOptions.categoryIndex + 1} категория`
+    );
 
-    const backButton = new Control(this.node, 'button', '', 'back');
+    this.timerWrapper = new Control(this.node, 'div', 'timer_wrapper');
+    const backButton = new Control(this.timerWrapper.node, 'button', 'button_exit button_questions', '');
     backButton.node.onclick = () => {
       this.onBack();
     };
 
-    const homeButton = new Control(this.node, 'button', '', 'home');
-    homeButton.node.onclick = () => {
-      this.onHome();
-    };
+    // const homeButton = new Control(this.node, 'button', 'button button_questions button_home', 'home');
+    // homeButton.node.onclick = () => {
+    //   this.onHome();
+    // };
 
-    this.timer = new Timer(this.node);
-    this.progressIndicator = new Control(this.node, 'div', '', '');
+    this.timer = new Timer(this.timerWrapper.node);
 
     this.results = [];
 
@@ -99,10 +106,19 @@ export class GameFieldPage extends Control {
       return;
     }
 
-    this.progressIndicator.node.textContent = `${index + 1} / ${questions.length}`;
     if (this.gameOptions.settings.timeEnable) {
-      this.timer.start(this.gameOptions.settings.time);
+      const timerInput = new Control<HTMLInputElement>(this.timerWrapper.node, 'input', 'timer_input');
+      timerInput.node.type = 'range';
+      timerInput.node.value = '0.3';
+      timerInput.node.min = '0';
+      timerInput.node.max = '1';
+      timerInput.node.step = '0.001';
+      const timerIndicator = new Control(this.timerWrapper.node, 'div', 'progress', ``);
+
+      this.timer.start(this.gameOptions.settings.time, timerInput, timerIndicator);
       this.timer.onTimeOut = () => {
+        timerInput.destroy();
+        timerIndicator.destroy();
         question.destroy();
         this.results.push(false);
         SoundManager.fail();
@@ -112,6 +128,7 @@ export class GameFieldPage extends Control {
 
     const question = new this.GameQuestionConstructor(this.node, questions[index]);
     const pagination = new Control(question.node, 'div', 'pagination');
+    if (this.gameOptions.gameName === 'artists') pagination.node.classList.add('artists');
     questions.forEach((item, i) => {
       const paginationItem = new Control(pagination.node, 'div', `pagination_item`, '');
       if (this.results[i] === true) {
@@ -121,6 +138,9 @@ export class GameFieldPage extends Control {
       }
     });
 
+    this.progressIndicator = new Control(question.node, 'div', 'questions_indicator', '');
+    this.progressIndicator.node.textContent = `${index + 1} / ${questions.length}`;
+
     question.animateIn();
     question.onAnswer = (answerIndex) => {
       const correctAnswerIndex = questions[index].correctAnswerIndex;
@@ -129,14 +149,17 @@ export class GameFieldPage extends Control {
       const modal = new Control(this.node, 'div', 'modal modal_content', '');
       const answerIndicator = new Control(modal.node, 'div', 'answer_indicator', '');
 
-      const picture = new Control(modal.node, 'div', '', '');
-      const pictureImg = new Image(300, 300);
-      pictureImg.src = questions[index].imgUrl;
-      picture.node.append(pictureImg);
+      const picture = new Control(modal.node, 'div', 'answer_img', '');
+      picture.node.style.backgroundImage = `url("${questions[index].imgUrl}")`;
 
-      const pictureName = new Control(modal.node, 'div', '', questions[index].correctAnswerPictureName);
-      const artistName = new Control(modal.node, 'div', '', questions[index].artistName);
-      const pictureYear = new Control(modal.node, 'div', '', questions[index].correctAnswerYear.toString());
+      const pictureName = new Control(modal.node, 'div', 'answer_details', questions[index].correctAnswerPictureName);
+      const artistName = new Control(modal.node, 'div', 'answer_details', questions[index].artistName);
+      const pictureYear = new Control(
+        modal.node,
+        'div',
+        'answer_details',
+        questions[index].correctAnswerYear.toString()
+      );
 
       const result = answerIndex === correctAnswerIndex;
       this.results.push(result);
@@ -148,7 +171,7 @@ export class GameFieldPage extends Control {
         SoundManager.fail();
       }
 
-      const nextButton = new Control(modal.node, 'button', '', 'next');
+      const nextButton = new Control(modal.node, 'button', 'button_next', 'next');
       nextButton.node.onclick = () => {
         modal.destroy();
         question.animateOut().then(() => {

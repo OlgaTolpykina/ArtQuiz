@@ -1,0 +1,18 @@
+//Abstract
+@import './abstract/constants';
+@import './abstract//mixins';
+
+//Base
+@import './base/base';
+@import './base/buttons';
+@import './base/timer';
+
+//Layout
+@import './layout/header';
+@import './layout//startPage';
+@import './layout//categoriesPage';
+@import './layout/gameField';
+@import './layout//pictureQuestions';
+@import './layout/scoreDetails';
+@import './layout/resultsPage';
+@import './layout/footer';
