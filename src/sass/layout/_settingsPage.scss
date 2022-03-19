@@ -1,0 +1,101 @@
+.content_settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.setting_title {
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+.setting_item {
+  width: 100%;
+  margin: 50px;
+}
+
+.setting_input {
+  appearance: none;
+  height: 3px;
+  width: 220px;
+  cursor: pointer;
+  border-radius: 4.5px;
+  &.volume {
+    background: linear-gradient(to right, $color-active 0%, $color-active 30%, $color-grey 30%, $color-grey 100%);
+  }
+  &.time {
+    background: linear-gradient(to right, $color-active 0%, $color-active 0%, $color-grey 0%, $color-grey 100%);
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    background: $color-active;
+    border-radius: 100%;
+  }
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 320px;
+  }
+}
+
+.settings__switcher {
+  position: relative;
+  width: 85px;
+  &_input {
+    display: none;
+  }
+  &_label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+  }
+}
+
+.switcher {
+  &_inner-container {
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+    &::before,
+    &::after {
+      float: left;
+      width: 50%;
+      height: 30px;
+      padding: 0;
+      line-height: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      box-sizing: border-box;
+    }
+    &::before {
+      content: 'Вкл';
+      padding-left: 12px;
+      background-color: $color-active;
+    }
+    &::after {
+      content: 'Выкл';
+      padding-right: 10px;
+      background-color: $color-grey;
+      color: $color-text-on-dark;
+      text-align: right;
+    }
+  }
+  &_indicator {
+    width: 26px;
+    margin: 2px;
+    background: $color-text-on-dark;
+    border: 2px solid $color-grey;
+    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 55px;
+    transition: all 0.3s ease-in 0s;
+  }
+}

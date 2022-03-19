@@ -2,6 +2,7 @@
   width: 400px;
   height: 400px;
   margin: 0 auto;
+  padding: 30px;
   background-color: $color-background-light;
   color: $color-text-on-light;
   border-radius: 20px;
@@ -10,4 +11,14 @@
 .results {
   text-align: center;
   font-size: 40px;
+  &_phrase {
+    text-align: center;
+    font-size: 24px;
+    color: $color-active;
+  }
+  &_img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
 }

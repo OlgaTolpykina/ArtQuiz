@@ -31,7 +31,6 @@ export class Timer extends Control {
       currentTime1 -= 0.005;
       const value = (time - currentTime1) / time;
       timerInput.node.value = value.toString();
-      console.log(timerInput.node.value, value);
       const percent = 100;
       timerInput.node.style.background = `linear-gradient(to right, #ffbca2 0%, #ffbca2 ${value * percent}%, #a4a4a4 ${
         value * percent

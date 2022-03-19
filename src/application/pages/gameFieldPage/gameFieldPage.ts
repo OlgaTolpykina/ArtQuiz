@@ -61,6 +61,8 @@ export class GameFieldPage extends Control {
   private GameQuestionConstructor: IQuestionViewConstructor;
   questionsData: IQuestionData[];
   timerWrapper: Control<HTMLElement>;
+  timerInput: Control<HTMLInputElement>;
+  timerIndicator: Control<HTMLElement>;
 
   constructor(
     parentNode: HTMLElement,
@@ -86,11 +88,6 @@ export class GameFieldPage extends Control {
       this.onBack();
     };
 
-    // const homeButton = new Control(this.node, 'button', 'button button_questions button_home', 'home');
-    // homeButton.node.onclick = () => {
-    //   this.onHome();
-    // };
-
     this.timer = new Timer(this.timerWrapper.node);
 
     this.results = [];
@@ -107,21 +104,23 @@ export class GameFieldPage extends Control {
     }
 
     if (this.gameOptions.settings.timeEnable) {
-      const timerInput = new Control<HTMLInputElement>(this.timerWrapper.node, 'input', 'timer_input');
-      timerInput.node.type = 'range';
-      timerInput.node.value = '0.3';
-      timerInput.node.min = '0';
-      timerInput.node.max = '1';
-      timerInput.node.step = '0.001';
-      const timerIndicator = new Control(this.timerWrapper.node, 'div', 'progress', ``);
+      this.timerInput = new Control<HTMLInputElement>(this.timerWrapper.node, 'input', 'timer_input');
+      this.timerInput.node.type = 'range';
+      this.timerInput.node.value = '0.3';
+      this.timerInput.node.min = '0';
+      this.timerInput.node.max = '1';
+      this.timerInput.node.step = '0.001';
+      this.timerIndicator = new Control(this.timerWrapper.node, 'div', 'progress', ``);
 
-      this.timer.start(this.gameOptions.settings.time, timerInput, timerIndicator);
+      this.timer.start(this.gameOptions.settings.time, this.timerInput, this.timerIndicator);
       this.timer.onTimeOut = () => {
-        timerInput.destroy();
-        timerIndicator.destroy();
+        this.timerInput.destroy();
+        this.timerIndicator.destroy();
         question.destroy();
         this.results.push(false);
-        SoundManager.fail();
+        if (this.gameOptions.settings.soundsEnable) {
+          SoundManager.fail();
+        }
         this.questionCycle(gameName, questions, index + 1, onFinish);
       };
     }
@@ -143,6 +142,7 @@ export class GameFieldPage extends Control {
 
     question.animateIn();
     question.onAnswer = (answerIndex) => {
+      this.timer.stop();
       const correctAnswerIndex = questions[index].correctAnswerIndex;
 
       const overlay = new Control(this.node, 'div', 'overlay', '');
@@ -165,14 +165,20 @@ export class GameFieldPage extends Control {
       this.results.push(result);
       if (result) {
         answerIndicator.node.style.backgroundImage = 'url("./public/img/right_img.png")';
-        SoundManager.ok();
+        if (this.gameOptions.settings.soundsEnable) {
+          SoundManager.ok();
+        }
       } else {
         answerIndicator.node.style.backgroundImage = 'url("./public/img/wrong_img.png")';
-        SoundManager.fail();
+        if (this.gameOptions.settings.soundsEnable) {
+          SoundManager.fail();
+        }
       }
 
       const nextButton = new Control(modal.node, 'button', 'button_next', 'next');
       nextButton.node.onclick = () => {
+        this.timerInput.destroy();
+        this.timerIndicator.destroy();
         modal.destroy();
         question.animateOut().then(() => {
           overlay.destroy();

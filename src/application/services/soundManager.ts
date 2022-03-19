@@ -28,10 +28,10 @@ class SoundManagerClass {
     const cached = this.cache.get(name);
     if (cached) {
       const audio = new Audio(URL.createObjectURL(cached));
-      // audio.play();
+      audio.play();
     } else {
       const audio = new Audio(`${this.baseUrl}${name}.mp3`);
-      // audio.play();
+      audio.play();
     }
   }
 }

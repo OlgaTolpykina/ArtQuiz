@@ -10,7 +10,6 @@ import { ScoreDetailsPage } from '../pages/scoreDetailsPage/scoreDetailsPage';
 import { QuizDataModel } from '../services/quizDataModel';
 import { SoundManager } from '../services/soundManager';
 import footer from '../components/footer/footer';
-import './application.css';
 
 export class Application extends Control {
   private model: QuizDataModel;
@@ -151,7 +150,8 @@ export class Application extends Control {
 
   private mainCycle() {
     this.logo.node.style.backgroundImage = '';
-    if (!this.settingsButton) this.settingsButton = new Control(this.header.node, 'div', 'settings', '');
+    if (this.header.node.children.length < 2)
+      this.settingsButton = new Control(this.header.node, 'div', 'settings', '');
     const startPage = new StartPage(this.main.node);
     this.node.style.backgroundImage = 'url("./public/img/background.jpg")';
     startPage.animateIn();
@@ -164,6 +164,7 @@ export class Application extends Control {
 
     this.settingsButton.node.onclick = () => {
       startPage.animateOut().then(() => {
+        this.settingsButton.destroy();
         startPage.destroy();
 
         this.settingsHandler('main');
@@ -172,6 +173,7 @@ export class Application extends Control {
   }
 
   private settingsHandler(cycleName: string, gameName?: string) {
+    this.node.style.backgroundImage = '';
     const settingsPage = new SettingsPage(this.main.node, this.settingsModel.getData());
     settingsPage.onBack = () => {
       settingsPage.destroy();

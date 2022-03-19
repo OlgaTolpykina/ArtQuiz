@@ -10,14 +10,14 @@ button {
     top: 25px;
     left: 5px;
     &::before {
-      content: "\2190";
+      content: '\2190';
       color: $color-text-on-dark;
       font-size: 35px;
       cursor: pointer;
     }
     &:hover::before {
-      color: $color-active; 
-     }
+      color: $color-active;
+    }
   }
   &_questions {
     top: 13px;
@@ -32,16 +32,39 @@ button {
   &_exit {
     width: 36px;
     height: 36px;
-    background-image: url("../assets/img/svg/exit.svg");
+    background-image: url('../assets/img/svg/exit.svg');
     background-repeat: no-repeat;
     background-position: center;
     transition: transform 0.8s ease-in-out;
     cursor: pointer;
     &:hover {
-      transform: rotate(180deg);  
+      transform: rotate(180deg);
     }
   }
   &:hover {
     color: $color-active;
   }
+}
+
+.button_results {
+  width: 100px;
+  height: 50px;
+  margin: 20px;
+  background-color: #ffbca2;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  transition: transform 0.8s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.button_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
