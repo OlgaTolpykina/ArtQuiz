@@ -177,8 +177,10 @@ export class GameFieldPage extends Control {
 
       const nextButton = new Control(modal.node, 'button', 'button_next', 'next');
       nextButton.node.onclick = () => {
-        this.timerInput.destroy();
-        this.timerIndicator.destroy();
+        if (this.timerInput) {
+          this.timerInput.destroy();
+          this.timerIndicator.destroy();
+        }
         modal.destroy();
         question.animateOut().then(() => {
           overlay.destroy();
