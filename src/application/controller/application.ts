@@ -19,12 +19,13 @@ export class Application extends Control {
   header: Control<HTMLElement>;
   main: Control<HTMLElement>;
   gameFieldModel: GameFieldModel;
+  settingsButton: Control<HTMLElement>;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'global_wrapper');
 
     this.header = new Control(this.node, 'div', 'global_header');
-    const title = new Control(this.header.node, 'h1', 'global_title', 'artquiz');
+    this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
     this.main = new Control(this.node, 'div', 'global_main');
     this.node.append(footer.getTemplate());
     const preloader = new Control(this.node, 'div', '', 'loading....');
@@ -84,7 +85,6 @@ export class Application extends Control {
   }
 
   private scoreCycle(gameName: string, categoryIndex: number) {
-    console.log(categoryIndex);
     const scoreDetails = new ScoreDetailsPage(
       this.main.node,
       categoryIndex,
@@ -101,6 +101,9 @@ export class Application extends Control {
   }
 
   private categoryCycle(gameName: string) {
+    this.node.style.backgroundImage = '';
+    console.log(this.header.node.children.length);
+    if (!this.header.node.children.length) this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
     const categories = new CategoriesPage(
       this.main.node,
       gameName,
@@ -119,6 +122,7 @@ export class Application extends Control {
       const categoryNameIndex = this.model.getCategoriesData(gameName)[index];
       categories.animateOut().then(() => {
         categories.destroy();
+        this.settingsButton.destroy();
         this.gameCycle(gameName, index, categoryNameIndex.name);
       });
     };
@@ -126,13 +130,24 @@ export class Application extends Control {
     categories.onScore = (index) => {
       categories.animateOut().then(() => {
         categories.destroy();
+        this.settingsButton.destroy();
         this.scoreCycle(gameName, index);
       });
     };
+
+    this.settingsButton.node.onclick = () => {
+      categories.animateOut().then(() => {
+        categories.destroy();
+
+        this.settingsHandler('category', gameName);
+    });
   }
+} 
 
   private mainCycle() {
+    if (!this.settingsButton) this.settingsButton = new Control(this.header.node, 'button', 'button', 'settings');
     const startPage = new StartPage(this.main.node);
+    this.node.style.backgroundImage = 'url("./public/img/background.jpg")';
     startPage.animateIn();
     startPage.onGameSelect = (gameName) => {
       startPage.animateOut().then(() => {
@@ -140,22 +155,44 @@ export class Application extends Control {
         this.categoryCycle(gameName);
       });
     };
-    startPage.onSettings = () => {
+    // startPage.onSettings = () => {
+    this.settingsButton.node.onclick = () => {
       startPage.animateOut().then(() => {
         startPage.destroy();
 
-        const settingsPage = new SettingsPage(this.main.node, this.settingsModel.getData());
-        settingsPage.onBack = () => {
-          settingsPage.destroy();
-          this.mainCycle();
-        };
-        settingsPage.onSave = (settings) => {
-          console.log(settings);
-          settingsPage.destroy();
-          this.settingsModel.setData(settings);
-          this.mainCycle();
-        };
+        this.settingsHandler('main');
+        // const settingsPage = new SettingsPage(this.main.node, this.settingsModel.getData());
+        // settingsPage.onBack = () => {
+        //   settingsPage.destroy();
+        //   this.mainCycle();
+        // };
+        // settingsPage.onSave = (settings) => {
+        //   settingsPage.destroy();
+        //   this.settingsModel.setData(settings);
+        //   this.mainCycle();
+        // };
       });
     };
+  }
+
+  private settingsHandler(cycleName: string, gameName?: string) {
+    const settingsPage = new SettingsPage(this.main.node, this.settingsModel.getData());
+    settingsPage.onBack = () => {
+      settingsPage.destroy();
+      this.cycleHandler(cycleName, gameName);
+    };
+    settingsPage.onSave = (settings) => {
+      settingsPage.destroy();
+      this.settingsModel.setData(settings);
+      this.cycleHandler(cycleName, gameName);
+    };
+  }
+
+  private cycleHandler(cycleName: string, gameName?: string) {
+    if (cycleName === 'category') {
+      this.categoryCycle(gameName);
+    } else {
+      this.mainCycle();
+    }
   }
 }

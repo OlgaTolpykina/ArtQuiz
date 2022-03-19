@@ -31,7 +31,7 @@ const config = {
       ],
     }),
     new CleanWebpackPlugin(),
-    new ESLintPlugin({ extensions: ['ts', 'js'] }),
+    // new ESLintPlugin({ extensions: ['ts', 'js'] }),
   ],
   module: {
     rules: [
@@ -52,9 +52,6 @@ const config = {
         test: /\.json$/i,
         type: 'asset/resource',
       },
-
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
     ],
   },
   resolve: {

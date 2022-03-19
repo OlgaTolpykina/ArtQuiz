@@ -11,18 +11,14 @@ export class StartPage extends AnimatedControl {
     this.quickOut();
 
     const selectWrapper = new Control(this.node, 'div', 'select_wrapper');
-    const picturesButton = new Control(selectWrapper.node, 'div', 'select_item pictures', '');
-    const picturesImg = new Control(picturesButton.node, 'div', 'pictures', '');
-    const picturesTitle = new Control(picturesButton.node, 'h2', '', '');
-    const gameName = new Control(picturesTitle.node, 'span', '', 'pictures ');
-    const gameType = new Control(picturesTitle.node, 'span', '', 'quiz');
+    const picturesButton = new Control(selectWrapper.node, 'div', 'select_item pictures', 'картины');
     picturesButton.node.onclick = () => this.onGameSelect('pictures');
 
-    const artistsButton = new Control(selectWrapper.node, 'div', 'select_item artists', '');
+    const artistsButton = new Control(selectWrapper.node, 'div', 'select_item artists', 'художники');
     artistsButton.node.onclick = () => this.onGameSelect('artists');
 
-    const settingsWrapper = new Control(this.node, 'div', 'main_bottom');
-    const settingsButton = new Control(settingsWrapper.node, 'button', 'button', 'settings');
-    settingsButton.node.onclick = () => this.onSettings();
+    // const settingsWrapper = new Control(this.node, 'div', 'main_bottom');
+    // const settingsButton = new Control(settingsWrapper.node, 'button', 'button', 'settings');
+    // settingsButton.node.onclick = () => this.onSettings();
   }
 }
